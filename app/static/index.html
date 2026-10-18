@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Export Manager - From Urdu to Live Global Listing</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & Noto Nastaliq Urdu -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .urdu-font { font-family: 'Noto Nastaliq Urdu', serif; line-height: 2.2; }
+    .gradient-header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0369a1 100%);
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="gradient-header text-white shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-sky-500/20 border border-sky-400/40 flex items-center justify-center text-sky-400 shadow-inner">
+          <i class="fa-solid fa-earth-americas text-xl"></i>
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <h1 class="text-xl font-extrabold tracking-tight">AI Export Manager</h1>
+            <span class="bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 text-[10px] font-semibold px-2 py-0.5 rounded-full">NLP Hackathon MVP</span>
+          </div>
+          <p class="text-xs text-slate-300">From Urdu description to a live global listing • CoreTech Innovation</p>
+        </div>
+      </div>
+
+      <!-- Team & Cluster Info -->
+      <div class="flex items-center space-x-4 text-xs">
+        <div class="hidden md:block text-right">
+          <div class="font-semibold text-slate-200">Sufyan Arain (Team Lead)</div>
+          <div class="text-slate-400 text-[11px]">Sialkot & Faisalabad Export Clusters</div>
+        </div>
+        <div class="bg-slate-800/80 border border-slate-700 px-3 py-1.5 rounded-lg flex items-center space-x-2 text-slate-300">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="text-xs font-mono">FastAPI NLP Core v1.0</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-1 w-full space-y-8">
+    
+    <!-- Top Hero Banner / Hackathon Narrative -->
+    <div class="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <div class="space-y-1 max-w-3xl">
+        <div class="inline-flex items-center space-x-2 text-xs font-bold text-sky-600 bg-sky-50 px-2.5 py-1 rounded-full uppercase tracking-wider">
+          <i class="fa-solid fa-bullhorn"></i> Exporter Problem Solved
+        </div>
+        <h2 class="text-xl font-bold text-slate-900">Break the Language & Know-How Barrier for Pakistani Exporters</h2>
+        <p class="text-sm text-slate-600">
+          Exporters in Sialkot (leather, surgical, sports) and Faisalabad (textiles) speak and think in Urdu. 
+          AI Export Manager takes one voice note or Urdu sentence, automatically extracts specs, fills missing slots, generates high-converting English listings, optimizes export pricing, and publishes to Alibaba & Amazon in seconds.
+        </p>
+      </div>
+
+      <!-- Quick Benchmark Presets -->
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs space-y-2 min-w-[280px]">
+        <div class="font-bold text-slate-700 flex items-center">
+          <i class="fa-solid fa-wand-magic-sparkles text-amber-500 mr-1.5"></i> One-Click Exporter Presets:
+        </div>
+        <button onclick="loadPreset(1)" class="w-full text-left bg-white hover:bg-sky-50 hover:border-sky-300 border border-slate-200 p-2 rounded transition flex items-center justify-between">
+          <span>🧥 Sialkot Leather Jacket (Full)</span>
+          <i class="fa-solid fa-arrow-right text-slate-400 text-[10px]"></i>
+        </button>
+        <button onclick="loadPreset(2)" class="w-full text-left bg-white hover:bg-amber-50 hover:border-amber-300 border border-slate-200 p-2 rounded transition flex items-center justify-between">
+          <span>✂️ Surgical Scissors (Missing MOQ)</span>
+          <span class="bg-amber-100 text-amber-800 text-[9px] px-1.5 py-0.5 rounded font-bold">Slot Loop</span>
+        </button>
+        <button onclick="loadPreset(3)" class="w-full text-left bg-white hover:bg-emerald-50 hover:border-emerald-300 border border-slate-200 p-2 rounded transition flex items-center justify-between">
+          <span>🏨 Faisalabad Hotel Towels (Full)</span>
+          <i class="fa-solid fa-arrow-right text-slate-400 text-[10px]"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Step 1: Exporter Input Section -->
+    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 space-y-6">
+      <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-4">
+        <div>
+          <h3 class="text-lg font-bold text-slate-900 flex items-center">
+            <span class="w-7 h-7 rounded-lg bg-sky-600 text-white flex items-center justify-center text-xs font-bold mr-2">1</span>
+            Exporter Input (Urdu / Roman Urdu Text or Voice)
+          </h3>
+          <p class="text-xs text-slate-500 mt-0.5">Apne product ki tafseelat Roman Urdu ya Urdu rasm-ul-khat mein likhein ya bol kar batayein.</p>
+        </div>
+
+        <div class="flex items-center space-x-3 text-xs">
+          <!-- Platform selector -->
+          <div class="flex items-center space-x-1.5 bg-slate-100 p-1 rounded-lg">
+            <label class="font-semibold text-slate-600 px-2">Target Platform:</label>
+            <select id="platformSelect" class="bg-white border-0 py-1 px-2.5 rounded shadow-sm text-xs font-medium focus:ring-1 focus:ring-sky-500">
+              <option value="alibaba">Alibaba.com (B2B)</option>
+              <option value="amazon">Amazon SP-API (B2C)</option>
+              <option value="both">Both (Alibaba + Amazon)</option>
+            </select>
+          </div>
+
+          <!-- Market country -->
+          <div class="flex items-center space-x-1.5 bg-slate-100 p-1 rounded-lg">
+            <label class="font-semibold text-slate-600 px-2">Target Market:</label>
+            <select id="countrySelect" class="bg-white border-0 py-1 px-2.5 rounded shadow-sm text-xs font-medium focus:ring-1 focus:ring-sky-500">
+              <option value="USA">United States (USA)</option>
+              <option value="UK">United Kingdom (UK)</option>
+              <option value="Germany">Germany (EU)</option>
+              <option value="UAE">United Arab Emirates</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input Form -->
+      <div class="space-y-4">
+        <div class="relative">
+          <textarea id="urduInput" rows="3" placeholder="Maslan: Mere paas asli chamray ki mardana jacket hai, size M se XXL, kaala aur brown rang, kam az kam 500 pieces, rate 40 dollar per piece, 15 din mein delivery." class="w-full border border-slate-300 rounded-xl p-4 text-sm focus:border-sky-500 focus:ring-2 focus:ring-sky-100 outline-none transition placeholder-slate-400"></textarea>
+
+          <!-- Voice Recording Simulation / Button -->
+          <div class="absolute right-3 bottom-3 flex items-center space-x-2">
+            <button id="voiceBtn" onclick="toggleVoiceRecording()" type="button" class="bg-slate-100 hover:bg-sky-50 text-slate-700 hover:text-sky-600 border border-slate-200 px-3 py-1.5 rounded-lg text-xs font-medium flex items-center space-x-1.5 transition">
+              <i id="micIcon" class="fa-solid fa-microphone text-rose-500"></i>
+              <span id="micText">Voice Input</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <div class="text-xs text-slate-500 flex items-center">
+            <i class="fa-solid fa-shield-halved text-emerald-500 mr-1.5"></i>
+            Strict privacy: No shop passwords requested • Validated through Pydantic JSON schema
+          </div>
+          <button id="submitBtn" onclick="submitDraft()" class="bg-sky-600 hover:bg-sky-700 text-white font-semibold px-6 py-2.5 rounded-xl text-sm shadow hover:shadow-md transition flex items-center space-x-2">
+            <span>Process with NLP Engine</span>
+            <i class="fa-solid fa-arrow-right text-xs"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Slot Filling Follow-Up Modal/Card (Dynamically Shown if slots missing) -->
+    <div id="followUpCard" class="hidden bg-amber-50 border-2 border-amber-300 rounded-2xl p-6 shadow-md animate-fade-in space-y-4">
+      <div class="flex items-start space-x-3">
+        <div class="w-10 h-10 rounded-full bg-amber-200 text-amber-800 flex items-center justify-center text-lg shrink-0">
+          <i class="fa-solid fa-comments"></i>
+        </div>
+        <div class="space-y-1 flex-1">
+          <div class="flex items-center space-x-2">
+            <span class="bg-amber-200 text-amber-900 text-[10px] font-bold uppercase px-2 py-0.5 rounded">Smart Follow-up (Urdu Dialogue)</span>
+            <span id="missingSlotsBadge" class="text-xs font-semibold text-amber-800"></span>
+          </div>
+          <h4 id="followUpQuestionUrdu" class="text-base font-bold text-amber-950 urdu-font"></h4>
+          <p id="followUpQuestionEn" class="text-xs text-amber-700"></p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-3 pt-2">
+        <input id="followUpAnswerInput" type="text" placeholder="Jawab yahan darj karein (e.g., MOQ 500 pieces ya 500 pcs)" class="flex-1 bg-white border border-amber-300 rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-amber-200">
+        <button onclick="submitFollowUpAnswer()" class="bg-amber-600 hover:bg-amber-700 text-white font-semibold px-5 py-2.5 rounded-xl text-sm shadow transition">
+          Jawab Submit Karein
+        </button>
+      </div>
+    </div>
+
+    <!-- Results Section (Shown once ready) -->
+    <div id="resultsSection" class="hidden space-y-8">
+      
+      <!-- Extracted Attributes Chips -->
+      <div class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm space-y-3">
+        <div class="flex items-center justify-between">
+          <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center">
+            <i class="fa-solid fa-microchip text-sky-500 mr-2"></i> Stage 2: Validated Product Attributes (NER)
+          </h4>
+          <span class="text-xs text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">100% Attributes Extracted</span>
+        </div>
+        <div id="attributeChips" class="flex flex-wrap gap-2 text-xs">
+          <!-- Filled by JS -->
+        </div>
+      </div>
+
+      <!-- Main Two-Column Layout: Left = Listing Preview; Right = Score & Market Insights -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Left Column: English Listing Preview (7 Cols) -->
+        <div class="lg:col-span-7 bg-white border border-slate-200 rounded-2xl shadow-sm p-6 space-y-6">
+          
+          <div class="flex items-center justify-between border-b border-slate-100 pb-4">
+            <div>
+              <span class="bg-sky-100 text-sky-800 text-[10px] font-bold uppercase px-2 py-0.5 rounded">RAG Generated Export Listing</span>
+              <h3 class="text-lg font-bold text-slate-900 mt-1">Marketplace Output</h3>
+            </div>
+            <div class="text-xs text-slate-500 flex items-center space-x-2">
+              <span id="targetPlatformBadge" class="bg-slate-100 px-2.5 py-1 rounded font-medium text-slate-700"></span>
+            </div>
+          </div>
+
+          <!-- Title Preview -->
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between text-xs text-slate-500">
+              <span class="font-bold text-slate-700">Product Title:</span>
+              <span id="titleCharCount" class="font-mono text-[11px]"></span>
+            </div>
+            <div id="listingTitle" class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-sm font-semibold text-slate-900"></div>
+          </div>
+
+          <!-- 5 Benefit-Driven Bullets -->
+          <div class="space-y-2">
+            <label class="text-xs font-bold text-slate-700 uppercase tracking-wider">5 Buyer-Focused Bullets (B2B / B2C):</label>
+            <div id="listingBullets" class="space-y-2 text-xs text-slate-700">
+              <!-- Bullets populated by JS -->
+            </div>
+          </div>
+
+          <!-- 15 Keywords Chips -->
+          <div class="space-y-2">
+            <label class="text-xs font-bold text-slate-700 uppercase tracking-wider">15 High-Intent SEO Keywords:</label>
+            <div id="listingKeywords" class="flex flex-wrap gap-1.5 text-xs">
+              <!-- Keywords populated by JS -->
+            </div>
+          </div>
+
+          <!-- Urdu Exporter Summary (Human in the loop approval) -->
+          <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 space-y-2">
+            <div class="flex items-center space-x-2 text-xs font-bold text-blue-900">
+              <i class="fa-solid fa-language text-blue-600"></i>
+              <span>Urdu Khulasa (Exporter Approval Ke Liye):</span>
+            </div>
+            <p id="urduSummaryText" class="text-sm text-blue-950 urdu-font"></p>
+          </div>
+
+          <!-- Publish Action Bar -->
+          <div class="pt-4 border-t border-slate-100 flex flex-wrap items-center justify-between gap-4">
+            <div class="text-xs text-slate-500 flex items-center">
+              <i class="fa-solid fa-user-check text-sky-600 mr-1.5"></i>
+              Human in the loop: Listing will only go live on your click.
+            </div>
+            <button id="publishBtn" onclick="publishListing()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-6 py-2.5 rounded-xl text-sm shadow hover:shadow-md transition flex items-center space-x-2">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <span>Approve & Publish to Marketplace</span>
+            </button>
+          </div>
+
+          <!-- Live Publish Notification Box -->
+          <div id="publishSuccessBox" class="hidden bg-emerald-50 border border-emerald-300 rounded-xl p-4 space-y-3">
+            <div class="flex items-center space-x-2 text-emerald-900 font-bold text-sm">
+              <i class="fa-solid fa-circle-check text-emerald-600 text-lg"></i>
+              <span id="publishStatusTitle">Listing Live!</span>
+            </div>
+            <p id="publishSummaryUrdu" class="text-xs text-emerald-800 font-medium"></p>
+            <div class="flex flex-wrap gap-2 pt-1">
+              <a id="alibabaLiveLink" href="#" target="_blank" class="hidden bg-[#ff6a00] hover:bg-[#e65c00] text-white text-xs font-bold px-4 py-2 rounded-lg shadow transition items-center">
+                <i class="fa-solid fa-arrow-up-right-from-square mr-1.5"></i> Open Alibaba Live Listing
+              </a>
+              <a id="amazonLiveLink" href="#" target="_blank" class="hidden bg-[#131921] hover:bg-black text-amber-400 text-xs font-bold px-4 py-2 rounded-lg shadow transition items-center">
+                <i class="fa-solid fa-arrow-up-right-from-square mr-1.5"></i> Open Amazon Live Listing
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Quality Scorer, Market Intelligence & Payment Optimizer (5 Cols) -->
+        <div class="lg:col-span-5 space-y-6">
+          
+          <!-- Quality Scorer Card (0-100) -->
+          <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h4 class="text-sm font-bold text-slate-900 flex items-center">
+                <i class="fa-solid fa-chart-pie text-sky-600 mr-2"></i> Quality Scorer Rubric (0-100)
+              </h4>
+              <span id="autoImprovedBadge" class="hidden bg-purple-100 text-purple-800 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                Auto-Improved (&ge;80)
+              </span>
+            </div>
+
+            <!-- Total Score Big Display -->
+            <div class="flex items-center justify-between bg-slate-50 p-4 rounded-xl border border-slate-200">
+              <div>
+                <div class="text-xs text-slate-500 font-medium">Composite Score:</div>
+                <div id="totalScoreText" class="text-3xl font-black text-sky-600">0/100</div>
+              </div>
+              <div id="scoreStatusPill" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-emerald-100 text-emerald-800">
+                PASSED (&ge;80)
+              </div>
+            </div>
+
+            <!-- Score breakdown bars -->
+            <div class="space-y-2.5 text-xs">
+              <div>
+                <div class="flex justify-between font-medium text-slate-700 mb-1">
+                  <span>Required Attributes (Schema):</span>
+                  <span id="attrScoreVal" class="font-bold"></span>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-2">
+                  <div id="attrScoreBar" class="bg-sky-600 h-2 rounded-full" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between font-medium text-slate-700 mb-1">
+                  <span>Title Quality & Search Intent:</span>
+                  <span id="titleScoreVal" class="font-bold"></span>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-2">
+                  <div id="titleScoreBar" class="bg-sky-600 h-2 rounded-full" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between font-medium text-slate-700 mb-1">
+                  <span>Buyer Benefit Bullets:</span>
+                  <span id="bulletScoreVal" class="font-bold"></span>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-2">
+                  <div id="bulletScoreBar" class="bg-sky-600 h-2 rounded-full" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between font-medium text-slate-700 mb-1">
+                  <span>SEO Keywords Relevance:</span>
+                  <span id="kwScoreVal" class="font-bold"></span>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-2">
+                  <div id="kwScoreBar" class="bg-sky-600 h-2 rounded-full" style="width: 0%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between font-medium text-slate-700 mb-1">
+                  <span>Platform Policy & Compliance:</span>
+                  <span id="policyScoreVal" class="font-bold"></span>
+                </div>
+                <div class="w-full bg-slate-100 rounded-full h-2">
+                  <div id="policyScoreBar" class="bg-emerald-500 h-2 rounded-full" style="width: 0%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Market Intelligence & Suggested Price Card -->
+          <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h4 class="text-sm font-bold text-slate-900 flex items-center">
+                <i class="fa-solid fa-chart-line text-emerald-600 mr-2"></i> Market Intelligence & Pricing
+              </h4>
+              <span id="demandLevelBadge" class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full">
+                Very High Demand
+              </span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 text-xs">
+              <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl">
+                <div class="text-slate-500 font-medium">Suggested FOB Price:</div>
+                <div id="suggestedPriceText" class="text-xl font-black text-emerald-600">$48.00</div>
+                <div class="text-[10px] text-slate-400 mt-0.5">Based on US/EU benchmarks</div>
+              </div>
+              <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl">
+                <div class="text-slate-500 font-medium">Market Price Range:</div>
+                <div id="marketPriceRangeText" class="text-sm font-bold text-slate-800">$35.00 - $75.00</div>
+                <div class="text-[10px] text-slate-400 mt-0.5">Estimated margin: ~32%</div>
+              </div>
+            </div>
+
+            <!-- Recommendations list -->
+            <div class="text-xs space-y-1.5 text-slate-600 pt-1">
+              <div class="font-bold text-slate-800">Export Pricing Recommendations:</div>
+              <ul id="marketRecsList" class="list-disc list-inside space-y-1">
+                <!-- populated by JS -->
+              </ul>
+            </div>
+          </div>
+
+          <!-- Payment Optimizer & FBR Tax Guidance Card -->
+          <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+              <h4 class="text-sm font-bold text-slate-900 flex items-center">
+                <i class="fa-solid fa-hand-holding-dollar text-indigo-600 mr-2"></i> Payment & FBR Tax Guidance
+              </h4>
+              <span class="bg-indigo-100 text-indigo-800 text-[10px] font-bold px-2 py-0.5 rounded-full">0.25% Regime</span>
+            </div>
+
+            <div class="text-xs space-y-3">
+              <div class="bg-indigo-50 border border-indigo-200 p-3 rounded-xl text-indigo-950">
+                <div class="font-bold flex items-center justify-between">
+                  <span>Recommended: <strong id="recPaymentChannel" class="text-indigo-700">Payoneer</strong></span>
+                  <span class="text-[10px] bg-white px-2 py-0.5 rounded shadow-sm text-indigo-900">Best for US/Alibaba</span>
+                </div>
+                <p id="paymentUrduAdvice" class="mt-1 text-[11px] leading-relaxed"></p>
+              </div>
+
+              <div class="border border-slate-200 rounded-xl p-3 bg-slate-50 space-y-1 text-slate-700">
+                <div class="font-bold text-slate-900 flex items-center justify-between">
+                  <span>FBR Export Withholding Tax:</span>
+                  <span class="text-emerald-700 font-black">0.25% Final Tax</span>
+                </div>
+                <p class="text-[11px] text-slate-500">
+                  Bank se <strong>Electronic Proceeds Realization Certificate (e-PRC)</strong> lazmi hasil karein taake standard 1% ke bajaye concessionary 0.25% slab apply ho.
+                </p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Step 3: Interactive Buyer Communication Agent Simulator -->
+      <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 space-y-6">
+        <div class="flex flex-wrap items-center justify-between gap-4 border-b border-slate-100 pb-4">
+          <div>
+            <div class="inline-flex items-center space-x-2 text-xs font-bold text-purple-600 bg-purple-50 px-2.5 py-1 rounded-full uppercase tracking-wider">
+              <i class="fa-solid fa-robot"></i> Stretch Feature: Buyer Communication Agent
+            </div>
+            <h3 class="text-lg font-bold text-slate-900 mt-1">Live International Buyer Inquiry Simulator</h3>
+            <p class="text-xs text-slate-500">Jab international buyer inquiry bhejta hai, agent usay Urdu mein aap se poochta hai aur aap ke Urdu jawab ko professional English quote mein dhaal deta hai.</p>
+          </div>
+
+          <button onclick="simulateBuyerInquiry()" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold text-xs px-4 py-2 rounded-xl shadow transition flex items-center space-x-1.5">
+            <i class="fa-solid fa-paper-plane"></i>
+            <span>Simulate Incoming Buyer Inquiry</span>
+          </button>
+        </div>
+
+        <!-- Chat / Dialogue Stream -->
+        <div id="inquiryStream" class="space-y-4">
+          <div class="text-center py-6 text-xs text-slate-400">
+            Click "Simulate Incoming Buyer Inquiry" to see the autonomous negotiation loop in action.
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-slate-900 text-slate-400 text-xs py-6 border-t border-slate-800 mt-12">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div>
+        <strong class="text-white">CoreTech Innovation</strong> • AI Export Manager v1.0 • NLP Hackathon Project
+      </div>
+      <div>
+        Team: Sufyan Arain (Lead), Shahzaib Sheikh, Sehar, Nimra, Zammad
+      </div>
+      <div>
+        Sialkot & Faisalabad Export Clusters • Open Source License
+      </div>
+    </div>
+  </footer>
+
+  <!-- Frontend Logic -->
+  <script>
+    let currentListingId = null;
+    let isRecording = false;
+
+    // Presets from proposal
+    const PRESETS = {
+      1: "Mere paas asli chamray ki mardana jacket hai, size M se XXL, kaala aur brown rang, kam az kam 500 pieces, rate 40 dollar per piece, 15 din mein delivery.",
+      2: "Sialkot medical surgical mayo scissors stainless steel CE mark rate 4 dollar delivery 10 din",
+      3: "Faisalabad 100% combed cotton bath towels 70x140 cm white and grey MOQ 1000 pieces rate 5 dollar 20 days delivery"
+    };
+
+    function loadPreset(num) {
+      document.getElementById('urduInput').value = PRESETS[num];
+      // highlight button
+      submitDraft();
+    }
+
+    // Voice simulation / Web Speech API
+    function toggleVoiceRecording() {
+      const micIcon = document.getElementById('micIcon');
+      const micText = document.getElementById('micText');
+      
+      if (!isRecording) {
+        isRecording = true;
+        micIcon.classList.remove('fa-microphone');
+        micIcon.classList.add('fa-stop', 'animate-pulse', 'text-red-600');
+        micText.innerText = "Listening (Urdu)...";
+
+        // Check if Web Speech API is supported
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+          const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+          const recognition = new SpeechRecognition();
+          recognition.lang = 'ur-PK';
+          recognition.interimResults = false;
+          recognition.onresult = function(event) {
+            const transcript = event.results[0][0].transcript;
+            document.getElementById('urduInput').value = transcript;
+            stopVoice();
+          };
+          recognition.onerror = function() {
+            fallbackSpeechSim();
+          };
+          recognition.start();
+        } else {
+          fallbackSpeechSim();
+        }
+      } else {
+        stopVoice();
+      }
+    }
+
+    function fallbackSpeechSim() {
+      setTimeout(() => {
+        document.getElementById('urduInput').value = PRESETS[1];
+        stopVoice();
+      }, 2000);
+    }
+
+    function stopVoice() {
+      isRecording = false;
+      const micIcon = document.getElementById('micIcon');
+      const micText = document.getElementById('micText');
+      micIcon.className = 'fa-solid fa-microphone text-rose-500';
+      micText.innerText = "Voice Input";
+    }
+
+    // Submit draft to API
+    async function submitDraft() {
+      const text = document.getElementById('urduInput').value.trim();
+      if (!text) {
+        alert("Baraye meherbani product ki tafseelat darj karein.");
+        return;
+      }
+
+      const platform = document.getElementById('platformSelect').value;
+      const country = document.getElementById('countrySelect').value;
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Running NLP Pipeline...`;
+
+      try {
+        const response = await fetch('/api/v1/listings/draft', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            urdu_text: text,
+            platform: platform,
+            target_country: country
+          })
+        });
+
+        const data = await response.json();
+        currentListingId = data.id;
+        handleListingResponse(data);
+      } catch (err) {
+        alert("Error connecting to NLP server: " + err.message);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = `<span>Process with NLP Engine</span><i class="fa-solid fa-arrow-right text-xs"></i>`;
+      }
+    }
+
+    // Submit follow up answer
+    async function submitFollowUpAnswer() {
+      const answer = document.getElementById('followUpAnswerInput').value.trim();
+      if (!answer) return;
+
+      try {
+        const response = await fetch(`/api/v1/listings/${currentListingId}/answer`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ answer_text: answer })
+        });
+        const data = await response.json();
+        document.getElementById('followUpAnswerInput').value = "";
+        handleListingResponse(data);
+      } catch (err) {
+        alert("Error submitting answer: " + err.message);
+      }
+    }
+
+    // Process API response
+    function handleListingResponse(data) {
+      if (data.status === 'needs_info') {
+        // Show follow-up card
+        const fu = data.slots_status;
+        document.getElementById('followUpCard').classList.remove('hidden');
+        document.getElementById('missingSlotsBadge').innerText = `Missing: ${fu.missing_fields.join(', ').toUpperCase()}`;
+        document.getElementById('followUpQuestionUrdu').innerText = fu.follow_up_question_urdu;
+        document.getElementById('followUpQuestionEn').innerText = fu.follow_up_question_en;
+        document.getElementById('resultsSection').classList.add('hidden');
+        document.getElementById('followUpCard').scrollIntoView({ behavior: 'smooth' });
+      } else {
+        // Ready! Hide follow-up, show full results
+        document.getElementById('followUpCard').classList.add('hidden');
+        document.getElementById('resultsSection').classList.remove('hidden');
+        renderResults(data);
+        document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function renderResults(data) {
+      // 1. Render Attribute chips
+      const chipsDiv = document.getElementById('attributeChips');
+      chipsDiv.innerHTML = '';
+      const attrs = data.attributes;
+      const chipList = [
+        { label: 'Category', val: attrs.category, icon: 'fa-layer-group', color: 'bg-purple-100 text-purple-800' },
+        { label: 'Product Type', val: attrs.product_type, icon: 'fa-tag', color: 'bg-blue-100 text-blue-800' },
+        { label: 'Material', val: attrs.material, icon: 'fa-shield', color: 'bg-amber-100 text-amber-800' },
+        { label: 'Sizes', val: attrs.sizes ? attrs.sizes.join(', ') : null, icon: 'fa-ruler', color: 'bg-emerald-100 text-emerald-800' },
+        { label: 'Colors', val: attrs.colors ? attrs.colors.join(', ') : null, icon: 'fa-palette', color: 'bg-rose-100 text-rose-800' },
+        { label: 'MOQ', val: attrs.moq ? `${attrs.moq} pcs` : null, icon: 'fa-cubes', color: 'bg-indigo-100 text-indigo-800' },
+        { label: 'Unit Price', val: attrs.unit_price_usd ? `$${attrs.unit_price_usd.toFixed(2)}` : null, icon: 'fa-dollar-sign', color: 'bg-emerald-100 text-emerald-800' },
+        { label: 'Lead Time', val: attrs.lead_time_days ? `${attrs.lead_time_days} days` : null, icon: 'fa-truck-fast', color: 'bg-sky-100 text-sky-800' },
+      ];
+
+      chipList.forEach(c => {
+        if (c.val) {
+          chipsDiv.innerHTML += `
+            <span class="inline-flex items-center space-x-1.5 px-3 py-1 rounded-lg font-medium ${c.color}">
+              <i class="fa-solid ${c.icon}"></i>
+              <span>${c.label}: <strong>${c.val}</strong></span>
+            </span>
+          `;
+        }
+      });
+
+      // 2. Listing Preview
+      const listing = data.listing;
+      document.getElementById('listingTitle').innerText = listing.title;
+      document.getElementById('titleCharCount').innerText = `${listing.title.length} chars (Optimal)`;
+      document.getElementById('targetPlatformBadge').innerText = data.target_platform.toUpperCase();
+
+      // Bullets
+      const bulletsDiv = document.getElementById('listingBullets');
+      bulletsDiv.innerHTML = '';
+      listing.bullets.forEach((b, idx) => {
+        bulletsDiv.innerHTML += `
+          <div class="flex items-start space-x-2 bg-slate-50 p-2.5 rounded-lg border border-slate-100">
+            <span class="w-5 h-5 rounded-full bg-sky-100 text-sky-700 font-bold flex items-center justify-center text-[10px] shrink-0 mt-0.5">${idx+1}</span>
+            <span>${b}</span>
+          </div>
+        `;
+      });
+
+      // Keywords
+      const kwDiv = document.getElementById('listingKeywords');
+      kwDiv.innerHTML = '';
+      listing.keywords.forEach(kw => {
+        kwDiv.innerHTML += `<span class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1 rounded-md text-[11px] font-mono border border-slate-200">${kw}</span>`;
+      });
+
+      // Urdu Summary
+      document.getElementById('urduSummaryText').innerText = listing.urdu_summary;
+
+      // 3. Quality Scorer Card
+      const qs = data.quality_score;
+      document.getElementById('totalScoreText').innerText = `${qs.total_score}/100`;
+      
+      document.getElementById('attrScoreVal').innerText = `${qs.attributes_score}/30`;
+      document.getElementById('attrScoreBar').style.width = `${(qs.attributes_score / 30) * 100}%`;
+
+      document.getElementById('titleScoreVal').innerText = `${qs.title_score}/20`;
+      document.getElementById('titleScoreBar').style.width = `${(qs.title_score / 20) * 100}%`;
+
+      document.getElementById('bulletScoreVal').innerText = `${qs.bullets_score}/20`;
+      document.getElementById('bulletScoreBar').style.width = `${(qs.bullets_score / 20) * 100}%`;
+
+      document.getElementById('kwScoreVal').innerText = `${qs.keywords_score}/15`;
+      document.getElementById('kwScoreBar').style.width = `${(qs.keywords_score / 15) * 100}%`;
+
+      document.getElementById('policyScoreVal').innerText = `${qs.compliance_score}/15`;
+      document.getElementById('policyScoreBar').style.width = `${(qs.compliance_score / 15) * 100}%`;
+
+      if (qs.auto_improved) {
+        document.getElementById('autoImprovedBadge').classList.remove('hidden');
+      } else {
+        document.getElementById('autoImprovedBadge').classList.add('hidden');
+      }
+
+      // 4. Market Intelligence
+      const mi = data.market_insight;
+      if (mi) {
+        document.getElementById('suggestedPriceText').innerText = `$${mi.suggested_price_usd.toFixed(2)}`;
+        document.getElementById('marketPriceRangeText').innerText = `$${mi.market_price_min.toFixed(2)} - $${mi.market_price_max.toFixed(2)}`;
+        document.getElementById('demandLevelBadge').innerText = mi.demand_level;
+        
+        const recList = document.getElementById('marketRecsList');
+        recList.innerHTML = '';
+        mi.recommendations.forEach(r => {
+          recList.innerHTML += `<li>${r}</li>`;
+        });
+      }
+
+      // 5. Payment advice fetch
+      fetchPaymentAdvice(data.target_country, attrs.unit_price_usd ? (attrs.unit_price_usd * (attrs.moq || 500)) : 5000.0);
+
+      // Reset published status box
+      document.getElementById('publishSuccessBox').classList.add('hidden');
+    }
+
+    async function fetchPaymentAdvice(country, amount) {
+      try {
+        const res = await fetch(`/api/v1/payment-tax/optimize?country=${encodeURIComponent(country)}&amount_usd=${amount}`);
+        const data = await res.json();
+        document.getElementById('recPaymentChannel').innerText = data.recommended_channel;
+        document.getElementById('paymentUrduAdvice').innerText = data.urdu_advice;
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    // Publish listing
+    async function publishListing() {
+      if (!currentListingId) return;
+      const btn = document.getElementById('publishBtn');
+      btn.disabled = true;
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i> Publishing to Marketplace API...`;
+
+      try {
+        const platform = document.getElementById('platformSelect').value;
+        const res = await fetch(`/api/v1/listings/${currentListingId}/publish`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ platform: platform })
+        });
+        const data = await res.json();
+
+        // Show success box
+        const box = document.getElementById('publishSuccessBox');
+        box.classList.remove('hidden');
+        document.getElementById('publishStatusTitle').innerText = `Listing Successfully Published (${data.platform.toUpperCase()})`;
+        document.getElementById('publishSummaryUrdu').innerText = data.summary_urdu;
+
+        const aliLink = document.getElementById('alibabaLiveLink');
+        const amzLink = document.getElementById('amazonLiveLink');
+
+        if (data.platform === 'alibaba' || data.platform === 'both') {
+          aliLink.href = `/marketplace/alibaba/${currentListingId}`;
+          aliLink.classList.remove('hidden');
+          aliLink.classList.add('inline-flex');
+        }
+        if (data.platform === 'amazon' || data.platform === 'both') {
+          amzLink.href = `/marketplace/amazon/${currentListingId}`;
+          amzLink.classList.remove('hidden');
+          amzLink.classList.add('inline-flex');
+        }
+
+        box.scrollIntoView({ behavior: 'smooth' });
+      } catch (err) {
+        alert("Publish failed: " + err.message);
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i><span>Approve & Publish to Marketplace</span>`;
+      }
+    }
+
+    // Buyer Inquiry Simulation
+    let activeInquiryId = null;
+
+    async function simulateBuyerInquiry() {
+      if (!currentListingId) {
+        alert("Pehle product listing create karein.");
+        return;
+      }
+
+      const stream = document.getElementById('inquiryStream');
+      stream.innerHTML = `<div class="p-4 text-center text-xs text-purple-700 bg-purple-50 rounded-xl"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Connecting to Alibaba Buyer RFQ Stream...</div>`;
+
+      try {
+        const res = await fetch('/api/v1/buyer/inquiries', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            listing_id: currentListingId,
+            buyer_name: "Marcus Vance (Global Sourcing Director)",
+            buyer_country: "United States",
+            inquiry_message: "Hello, we are interested in placing an immediate trial order for 300 pieces with our custom brand logo embossed on the chest. Can you offer a discounted FOB price and confirm your turnaround time to Chicago?"
+          })
+        });
+
+        const data = await res.json();
+        activeInquiryId = data.id;
+
+        stream.innerHTML = `
+          <!-- Buyer Message Card -->
+          <div class="bg-slate-100 border border-slate-200 rounded-xl p-4 space-y-2">
+            <div class="flex items-center justify-between text-xs">
+              <span class="font-bold text-slate-800"><i class="fa-solid fa-user mr-1 text-slate-500"></i> ${data.buyer_name} (${data.buyer_country})</span>
+              <span class="text-slate-400 text-[10px]">Just now • via Alibaba Trade Messenger</span>
+            </div>
+            <p class="text-xs text-slate-700 italic">"${data.inquiry_message}"</p>
+          </div>
+
+          <!-- Agent Escalation in Urdu -->
+          <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 space-y-2">
+            <div class="flex items-center space-x-2 text-xs font-bold text-amber-900">
+              <i class="fa-solid fa-bell text-amber-600"></i>
+              <span>AI Agent Alert (Urdu Escalation):</span>
+            </div>
+            <p class="text-sm text-amber-950 urdu-font">${data.exporter_question_urdu}</p>
+            <div class="flex items-center space-x-2 pt-2">
+              <input id="exporterUrduReply" type="text" value="iska rate 45 dollar hai aur 20 din lagain gay" class="flex-1 bg-white border border-amber-300 rounded-lg px-3 py-2 text-xs outline-none focus:ring-1 focus:ring-amber-500">
+              <button onclick="sendExporterReply()" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-4 py-2 rounded-lg text-xs shadow transition">
+                Jawab Bhejein
+              </button>
+            </div>
+          </div>
+
+          <div id="englishGeneratedReplyBox" class="hidden"></div>
+        `;
+
+      } catch (e) {
+        alert("Failed to simulate inquiry: " + e.message);
+      }
+    }
+
+    async function sendExporterReply() {
+      const reply = document.getElementById('exporterUrduReply').value.trim();
+      if (!reply || !activeInquiryId) return;
+
+      try {
+        const res = await fetch(`/api/v1/buyer/inquiries/${activeInquiryId}/reply`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ urdu_response: reply })
+        });
+        const data = await res.json();
+
+        const box = document.getElementById('englishGeneratedReplyBox');
+        box.classList.remove('hidden');
+        box.innerHTML = `
+          <div class="bg-emerald-50 border border-emerald-300 rounded-xl p-4 space-y-2 animate-fade-in">
+            <div class="flex items-center justify-between text-xs font-bold text-emerald-900">
+              <span class="flex items-center"><i class="fa-solid fa-check-double text-emerald-600 mr-1.5"></i> Synthesized Professional B2B English Reply</span>
+              <span class="bg-emerald-200 text-emerald-900 text-[10px] px-2 py-0.5 rounded">Tone & Policy Checked</span>
+            </div>
+            <pre class="text-xs text-emerald-950 font-sans whitespace-pre-wrap bg-white p-3 rounded-lg border border-emerald-200">${data.generated_reply_en}</pre>
+          </div>
+        `;
+      } catch (e) {
+        alert("Failed to send reply: " + e.message);
+      }
+    }
+
+  </script>
+
+</body>
+</html>

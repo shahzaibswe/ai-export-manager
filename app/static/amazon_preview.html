@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{TITLE}} - Amazon.com</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .amz-nav { background-color: #131921; }
+    .amz-yellow { background-color: #ffd814; border-color: #fcd200; }
+    .amz-yellow:hover { background-color: #f7ca00; }
+    .amz-orange { background-color: #ffa41c; border-color: #ff8f00; }
+    .amz-orange:hover { background-color: #fa8900; }
+  </style>
+</head>
+<body class="bg-white text-gray-900 antialiased font-sans text-sm">
+
+  <!-- Amazon Navbar -->
+  <header class="amz-nav text-white">
+    <div class="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between">
+      <div class="flex items-center space-x-6">
+        <span class="text-xl font-bold tracking-tight text-white flex items-center">
+          amazon<span class="text-xs text-orange-400 font-normal ml-0.5">.com</span>
+        </span>
+        <div class="hidden md:flex items-center text-xs text-gray-300">
+          <i class="fa-solid fa-location-dot mr-1 text-white"></i>
+          <div>
+            <div class="text-[10px] text-gray-400">Deliver to</div>
+            <div class="font-bold text-white">United States</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="text-xs text-gray-300 flex items-center space-x-4">
+        <span class="bg-gray-800 px-2 py-1 rounded text-orange-400 font-mono text-xs">Amazon SP-API Synced</span>
+        <a href="/" class="bg-orange-500 hover:bg-orange-600 text-white px-3 py-1.5 rounded font-medium transition">← Back to Dashboard</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Product Container -->
+  <main class="max-w-7xl mx-auto px-4 py-6">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      
+      <!-- Image Simulation -->
+      <div class="lg:col-span-5">
+        <div class="w-full h-96 bg-gray-50 border border-gray-200 rounded flex flex-col items-center justify-center p-6 text-center">
+          <i class="fa-solid fa-box-open text-7xl text-gray-400 mb-3"></i>
+          <h3 class="font-bold text-gray-800 px-6">{{TITLE}}</h3>
+          <span class="mt-3 text-xs bg-gray-200 text-gray-700 px-2.5 py-1 rounded-full">Amazon Catalog Listing</span>
+          <div class="text-[11px] text-gray-500 mt-2">ASIN: {{LISTING_ID}} | Country of Origin: Pakistan</div>
+        </div>
+      </div>
+
+      <!-- Center description & bullets -->
+      <div class="lg:col-span-4">
+        <div class="text-xs text-[#007185] hover:underline cursor-pointer">Brand: CoreTech International Direct</div>
+        <h1 class="text-xl font-medium text-gray-900 mt-1 leading-snug">{{TITLE}}</h1>
+        
+        <div class="flex items-center space-x-2 mt-2">
+          <div class="text-amber-500 text-xs">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+          </div>
+          <span class="text-xs text-[#007185]">4.7 out of 5 stars (Verified Export)</span>
+        </div>
+
+        <div class="border-t border-b border-gray-200 my-3 py-2">
+          <div class="text-xs text-gray-500">List Price: <span class="line-through">${PRICE} + 20%</span></div>
+          <div class="text-2xl font-normal text-gray-900 flex items-baseline">
+            <span class="text-sm align-top mr-0.5">$</span>
+            <span class="text-2xl font-medium">{{PRICE}}</span>
+          </div>
+          <div class="text-xs text-gray-600 mt-1">Import fees and taxes included for North America dispatch.</div>
+        </div>
+
+        <div class="space-y-2 text-xs">
+          <div><strong class="text-gray-700">Material:</strong> {{MATERIAL}}</div>
+          <div><strong class="text-gray-700">Country of Origin:</strong> Pakistan (Export Certified)</div>
+          <div><strong class="text-gray-700">Fulfillment:</strong> Merchant Export Fulfillment (Sialkot / Faisalabad)</div>
+        </div>
+
+        <!-- Bullets -->
+        <div class="mt-4 pt-4 border-t border-gray-200">
+          <h3 class="font-bold text-sm text-gray-900 mb-2">About this item</h3>
+          <ul class="text-xs space-y-2 list-disc list-inside text-gray-700">
+            {{BULLETS_HTML}}
+          </ul>
+        </div>
+      </div>
+
+      <!-- Buy Box -->
+      <div class="lg:col-span-3">
+        <div class="border border-gray-300 rounded-lg p-4 bg-white shadow-sm space-y-3">
+          <div class="text-xl font-medium text-red-700">{{PRICE}}</div>
+          <div class="text-xs text-gray-600">FREE International Expedited Delivery to USA</div>
+          <div class="text-green-700 font-bold text-sm">In Stock</div>
+          
+          <div class="text-xs text-gray-500">
+            Ships from: <strong>Pakistan Export Logistics</strong><br>
+            Sold by: <strong>CoreTech Global Exporters</strong>
+          </div>
+
+          <button class="w-full amz-yellow text-gray-900 font-medium py-2 px-4 rounded-full text-xs shadow-sm cursor-pointer">
+            Add to Cart
+          </button>
+          <button class="w-full amz-orange text-gray-900 font-medium py-2 px-4 rounded-full text-xs shadow-sm cursor-pointer">
+            Buy Now
+          </button>
+
+          <div class="pt-2 border-t text-[11px] text-gray-500 flex items-center">
+            <i class="fa-solid fa-lock mr-2 text-gray-400"></i> Secure transaction
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+</body>
+</html>
