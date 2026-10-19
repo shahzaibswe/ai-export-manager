@@ -166,7 +166,7 @@ flowchart TD
 
 ## 7.4 Presentation Deck & Pitch Resources
 - **Interactive Web Deck:** Open [`http://127.0.0.1:8000/presentation`](http://127.0.0.1:8000/presentation) in any browser (Press `F11` for Fullscreen; navigate with Arrow Keys).
-- **PowerPoint File:** [`AI_Export_Manager_Hackathon_Presentation.pptx`](file:///C:/Users/n%20tech/.gemini/antigravity/scratch/ai-export-manager/AI_Export_Manager_Hackathon_Presentation.pptx) (15 16:9 widescreen slides).
+- **PowerPoint File:** [`AI_Export_Manager_Hackathon_Presentation.pptx`](./AI_Export_Manager_Hackathon_Presentation.pptx) (15 16:9 widescreen slides).
 
 ---
 

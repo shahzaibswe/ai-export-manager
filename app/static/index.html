@@ -899,6 +899,26 @@
       }
     }
 
+    // Auto-run preset from URL query params (used for automated screenshot capture)
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const preset = urlParams.get('preset');
+      const buyer = urlParams.get('buyer');
+      if (preset) {
+        setTimeout(() => {
+          loadPreset(parseInt(preset));
+          if (buyer) {
+            setTimeout(() => {
+              simulateBuyerInquiry();
+              setTimeout(() => {
+                sendExporterReply();
+              }, 1500);
+            }, 1800);
+          }
+        }, 800);
+      }
+    });
+
   </script>
 
 </body>

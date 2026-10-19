@@ -81,7 +81,28 @@ async def serve_alibaba_mock(listing_id: str):
                 record = r
                 break
 
-    if not record:
+    if not record and listing_id == "sample":
+        record = {
+            "listing": {
+                "title": "Luxury Quartz Chronograph Watch, Stainless Steel 316L, Water Resistant, Custom OEM Dial, MOQ 100",
+                "bullets": [
+                    "PRECISION QUARTZ TIMEKEEPING: Engineered with high-accuracy Japanese quartz movement and long-life battery.",
+                    "PREMIUM STAINLESS STEEL CASING: Scratch-resistant hardened mineral crystal glass and 3ATM/5ATM water resistance.",
+                    "BESPOKE PRIVATE LABEL OEM: Custom dial logo printing, engraved case-back, and luxury leatherette gift boxes.",
+                    "DIRECT FACTORY EXPORT PRICING: Accessible wholesale MOQ of 100 pieces at $25.00/unit FOB with high retail margin.",
+                    "WORLDWIDE EXPORT LOGISTICS: Rigorous pre-shipment quality inspection and rapid dispatch within 12 days to USA."
+                ]
+            },
+            "attributes": {
+                "product_type": "luxury_watches",
+                "category": "Watches & Timepieces",
+                "material": "Stainless Steel 316L",
+                "unit_price_usd": 25.0,
+                "moq": 100,
+                "lead_time_days": 12
+            }
+        }
+    elif not record:
         raise HTTPException(status_code=404, detail="Alibaba listing not found")
 
     ali_template = os.path.join(static_dir, "alibaba_preview.html")
@@ -117,7 +138,28 @@ async def serve_amazon_mock(listing_id: str):
                 record = r
                 break
 
-    if not record:
+    if not record and listing_id == "sample":
+        record = {
+            "listing": {
+                "title": "Luxury Quartz Chronograph Watch, Stainless Steel 316L, Water Resistant, Custom OEM Dial, MOQ 100",
+                "bullets": [
+                    "PRECISION QUARTZ TIMEKEEPING: Engineered with high-accuracy Japanese quartz movement and long-life battery.",
+                    "PREMIUM STAINLESS STEEL CASING: Scratch-resistant hardened mineral crystal glass and 3ATM/5ATM water resistance.",
+                    "BESPOKE PRIVATE LABEL OEM: Custom dial logo printing, engraved case-back, and luxury leatherette gift boxes.",
+                    "DIRECT FACTORY EXPORT PRICING: Accessible wholesale MOQ of 100 pieces at $25.00/unit FOB with high retail margin.",
+                    "WORLDWIDE EXPORT LOGISTICS: Rigorous pre-shipment quality inspection and rapid dispatch within 12 days to USA."
+                ]
+            },
+            "attributes": {
+                "product_type": "luxury_watches",
+                "category": "Watches & Timepieces",
+                "material": "Stainless Steel 316L",
+                "unit_price_usd": 25.0,
+                "moq": 100,
+                "lead_time_days": 12
+            }
+        }
+    elif not record:
         raise HTTPException(status_code=404, detail="Amazon listing not found")
 
     amz_template = os.path.join(static_dir, "amazon_preview.html")
