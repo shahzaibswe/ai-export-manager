@@ -64,6 +64,14 @@ async def serve_dashboard():
             return f.read()
     return "<h1>AI Export Manager is running. Dashboard loading...</h1>"
 
+@app.get("/presentation", response_class=HTMLResponse)
+async def serve_presentation():
+    deck_path = os.path.join(static_dir, "presentation_deck.html")
+    if os.path.exists(deck_path):
+        with open(deck_path, "r", encoding="utf-8") as f:
+            return f.read()
+    return "<h1>Presentation Deck Loading...</h1>"
+
 @app.get("/marketplace/alibaba/{listing_id}", response_class=HTMLResponse)
 async def serve_alibaba_mock(listing_id: str):
     record = db.get_listing(listing_id)

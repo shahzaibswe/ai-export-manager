@@ -118,6 +118,58 @@ flowchart TD
 
 ---
 
+## 7.2 UI Layout & Live Screenshots
+
+```
++----------------------------------------------------------------------------------------------------+
+|  AI EXPORT MANAGER  [NLP HACKATHON MVP]                          DEMO DECK | DEMO: localhost:8000  |
++----------------------------------------------------------------------------------------------------+
+| [EXPORTER INPUT (URDU / ROMAN URDU)]                               [PRESETS: Watches, Toys, Balls] |
+| > "Mere paas luxury quartz watches hain stainless steel case aur leather strap ke sath..."         |
+| [🎤 Voice Input]                                              [Process with NLP Engine ->]         |
++----------------------------------------------------------------------------------------------------+
+| [SMART URDU FOLLOW-UP (If slots missing)]                                                          |
+| "Aap ki Luxury Watches kis material ki bani hain? (Stainless Steel 316L, Leather Strap, Ceramic)"  |
++----------------------------------------------------------------------------------------------------+
+| [RAG GENERATED LISTING PREVIEW]                      | [QUALITY SCORE RUBRIC (0-100)]              |
+| Title: Luxury Quartz Chronograph Watch, 316L Steel...| Composite Score: 94 / 100 [PASSED >= 80]    |
+| • 5 Buyer-Focused Benefit Bullets                    | Attributes (30) Title (20) Bullets (20)     |
+| • 15 High-Intent SEO Keywords                        | Keywords (15) Policy Compliance (15)        |
+| • Urdu Khulasa (Approval Summary)                    |---------------------------------------------|
+| [APPROVE & PUBLISH TO MARKETPLACE ->]                | [MARKET INTELLIGENCE & PRICE RADAR]         |
+| -> Alibaba Trade Showcase: /marketplace/alibaba/{id} | Suggested FOB: $31.25 (US Range: $15-$65)   |
+| -> Amazon SP-API Catalog:  /marketplace/amazon/{id}  | Payment: Payoneer vs Wise (FBR 0.25% Tax)   |
++----------------------------------------------------------------------------------------------------+
+| [BUYER COMMUNICATION AGENT SIMULATOR]                                                              |
+| Buyer (Chicago, USA): "Can you do 200 watches with our custom logo on the dial? What is your FOB?" |
+| AI Alert (Urdu): "USA buyer ne custom quote maangi hai. Aap ka kya rate hai?"                     |
+| Exporter Reply: "iska rate 26 dollar hai aur 12 din lagain gay"                                   |
+| AI English Output: "Dear Marcus Vance, our confirmed FOB unit price is $26.00 with 12 days lead..."|
++----------------------------------------------------------------------------------------------------+
+```
+
+---
+
+## 7.3 Hackathon Demo Video Pitch Script (3-Minute Exact Cue)
+
+| Timestamp | Screen Action | Speaker Narration Script |
+|---|---|---|
+| **0:00 – 0:30** | Show real Urdu handwritten/typed exporter quote | *"Exporters in Sialkot and Faisalabad manufacture world-class goods, but they lose 30% revenue because global buyers search in English. How does an Urdu speaker list on Alibaba and Amazon without middlemen?"* |
+| **0:30 – 1:00** | Click preset or voice input on Dashboard | *"With AI Export Manager, the exporter speaks or types one natural Urdu sentence. Watch live as our NLP engine extracts the category, materials, MOQ, and unit price as verified attributes."* |
+| **1:00 – 1:20** | Trigger missing slot on Surgical Scissors | *"If any critical parameter like MOQ is missing, the AI doesn't crash—it initiates a smart dialogue in natural Urdu asking for the missing info. The exporter replies casually, and the listing completes."* |
+| **1:20 – 1:50** | Display generated listing & score gauge | *"Here is the generated English listing: marketplace-compliant title, 5 benefit-driven bullets, 15 SEO tags, and a 0-100 rubric score that automatically self-improves until it passes 80."* |
+| **1:50 – 2:10** | Show Market Intelligence & Tax Card | *"Our pricing engine compares US/EU market willingness-to-pay ($31.25 suggested), while our compliance advisor calculates Payoneer vs Wise fees and FBR 0.25% export tax."* |
+| **2:10 – 2:30** | Click 'Approve & Publish' | *"With one click, the exporter approves the Urdu summary, and the product goes live on our simulated Alibaba Trade Showcase and Amazon SP-API storefront with live ASINs."* |
+| **2:30 – 3:00** | Simulate live Buyer Inquiry & Closing | *"When an international buyer sends an inquiry, our agent negotiates in Urdu with the exporter and replies in fluent B2B English. We are CoreTech Innovation, bringing Pakistani exporters directly to the global stage."* |
+
+---
+
+## 7.4 Presentation Deck & Pitch Resources
+- **Interactive Web Deck:** Open [`http://127.0.0.1:8000/presentation`](http://127.0.0.1:8000/presentation) in any browser (Press `F11` for Fullscreen; navigate with Arrow Keys).
+- **PowerPoint File:** [`AI_Export_Manager_Hackathon_Presentation.pptx`](file:///C:/Users/n%20tech/.gemini/antigravity/scratch/ai-export-manager/AI_Export_Manager_Hackathon_Presentation.pptx) (15 16:9 widescreen slides).
+
+---
+
 ## 8. Team CoreTech Innovation
 
 | Member | Position | Primary Responsibilities |
