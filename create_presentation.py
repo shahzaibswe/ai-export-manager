@@ -5,51 +5,46 @@ from pptx.enum.text import PP_ALIGN
 from pptx.dml.color import RGBColor
 from pptx.enum.shapes import MSO_SHAPE
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+ASSETS_DIR = os.path.join(BASE_DIR, "presentation_assets")
+
 def create_deck():
     prs = Presentation()
     prs.slide_width = Inches(13.333)
     prs.slide_height = Inches(7.5)
 
     # Color Palette
-    C_NAVY = RGBColor(15, 23, 42)      # #0F172A
-    C_BLUE = RGBColor(2, 132, 199)     # #0284C7
-    C_EMERALD = RGBColor(16, 185, 129) # #10B981
-    C_AMBER = RGBColor(245, 158, 11)   # #F59E0B
+    C_NAVY = RGBColor(15, 23, 42)        # #0F172A
+    C_BLUE = RGBColor(2, 132, 199)       # #0284C7
+    C_EMERALD = RGBColor(16, 185, 129)   # #10B981
+    C_AMBER = RGBColor(245, 158, 11)     # #F59E0B
     C_WHITE = RGBColor(255, 255, 255)
-    C_GRAY = RGBColor(100, 116, 139)   # #64748B
-    C_LIGHT_BG = RGBColor(248, 250, 252) # #F8FAFC
-    C_CARD_BG = RGBColor(241, 245, 249)
+    C_GRAY = RGBColor(100, 116, 139)     # #64748B
+    C_DARK_CARD = RGBColor(30, 41, 59)
 
     blank_layout = prs.slide_layouts[6]
 
     def add_header(slide, title_text, category_text="CORETECH INNOVATION | NLP HACKATHON 2026"):
-        # Header banner shape
         header_shape = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(0), Inches(13.333), Inches(1.1))
         header_shape.fill.solid()
         header_shape.fill.fore_color.rgb = C_NAVY
         header_shape.line.color.rgb = C_NAVY
 
-        # Category / Team
-        cat_box = slide.shapes.add_textbox(Inches(0.8), Inches(0.15), Inches(8), Inches(0.3))
-        tf_cat = cat_box.text_frame
-        tf_cat.word_wrap = True
-        p_cat = tf_cat.paragraphs[0]
+        cat_box = slide.shapes.add_textbox(Inches(0.8), Inches(0.12), Inches(8), Inches(0.3))
+        p_cat = cat_box.text_frame.paragraphs[0]
         p_cat.text = category_text.upper()
         p_cat.font.size = Pt(10)
         p_cat.font.bold = True
         p_cat.font.color.rgb = C_BLUE
 
-        # Title
-        t_box = slide.shapes.add_textbox(Inches(0.8), Inches(0.4), Inches(10), Inches(0.55))
-        tf_t = t_box.text_frame
-        p_t = tf_t.paragraphs[0]
+        t_box = slide.shapes.add_textbox(Inches(0.8), Inches(0.38), Inches(10), Inches(0.55))
+        p_t = t_box.text_frame.paragraphs[0]
         p_t.text = title_text
         p_t.font.size = Pt(20)
         p_t.font.bold = True
         p_t.font.color.rgb = C_WHITE
 
-        # Live Demo Tag
-        tag_box = slide.shapes.add_textbox(Inches(10.5), Inches(0.35), Inches(2.2), Inches(0.4))
+        tag_box = slide.shapes.add_textbox(Inches(10.2), Inches(0.35), Inches(2.6), Inches(0.4))
         p_tag = tag_box.text_frame.paragraphs[0]
         p_tag.text = "DEMO: http://127.0.0.1:8000"
         p_tag.font.size = Pt(9)
@@ -65,15 +60,14 @@ def create_deck():
 
         tf = shape.text_frame
         tf.word_wrap = True
-        tf.margin_left = Inches(0.25)
-        tf.margin_top = Inches(0.2)
-        tf.margin_right = Inches(0.25)
-        tf.margin_bottom = Inches(0.2)
+        tf.margin_left = Inches(0.2)
+        tf.margin_top = Inches(0.18)
+        tf.margin_right = Inches(0.2)
+        tf.margin_bottom = Inches(0.18)
 
-        # Title
         p0 = tf.paragraphs[0]
         p0.text = title
-        p0.font.size = Pt(14)
+        p0.font.size = Pt(13)
         p0.font.bold = True
         p0.font.color.rgb = C_NAVY
 
@@ -83,285 +77,313 @@ def create_deck():
             p_b.font.size = Pt(9)
             p_b.font.bold = True
             p_b.font.color.rgb = C_EMERALD
-            p_b.space_after = Pt(4)
+            p_b.space_after = Pt(3)
 
         for item in items:
             p = tf.add_paragraph()
             p.text = f"• {item}"
-            p.font.size = Pt(11)
+            p.font.size = Pt(10)
             p.font.color.rgb = C_GRAY
-            p.space_after = Pt(3)
+            p.space_after = Pt(2)
 
-    # -------------------------------------------------------------------------
+    def add_image_if_exists(slide, img_name, left, top, width, height, caption=None):
+        img_path = os.path.join(ASSETS_DIR, img_name)
+        if os.path.exists(img_path):
+            pic = slide.shapes.add_picture(img_path, left, top, width, height)
+            if caption:
+                cap_box = slide.shapes.add_textbox(left, top + height + Inches(0.05), width, Inches(0.35))
+                p = cap_box.text_frame.paragraphs[0]
+                p.text = caption
+                p.font.size = Pt(9)
+                p.font.bold = True
+                p.font.color.rgb = C_GRAY
+            return pic
+        return None
+
+    # =========================================================================
     # SLIDE 1: TITLE SLIDE
-    # -------------------------------------------------------------------------
+    # =========================================================================
     s1 = prs.slides.add_slide(blank_layout)
     bg1 = s1.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(0), Inches(13.333), Inches(7.5))
     bg1.fill.solid()
     bg1.fill.fore_color.rgb = C_NAVY
     bg1.line.color.rgb = C_NAVY
 
-    tb = s1.shapes.add_textbox(Inches(1.2), Inches(1.5), Inches(11), Inches(4.5))
+    tb = s1.shapes.add_textbox(Inches(1.2), Inches(1.3), Inches(11), Inches(4.8))
     tf1 = tb.text_frame
     tf1.word_wrap = True
 
     p = tf1.paragraphs[0]
-    p.text = "CORETECH INNOVATION | OFFICIAL HACKATHON SUBMISSION"
+    p.text = "CORETECH INNOVATION | OFFICIAL NLP HACKATHON 2026 SUBMISSION"
     p.font.size = Pt(13)
     p.font.bold = True
     p.font.color.rgb = C_BLUE
-    p.space_after = Pt(10)
+    p.space_after = Pt(12)
 
     p = tf1.add_paragraph()
     p.text = "AI Export Manager"
-    p.font.size = Pt(44)
+    p.font.size = Pt(46)
     p.font.bold = True
     p.font.color.rgb = C_WHITE
 
     p = tf1.add_paragraph()
-    p.text = "From Urdu description to a live global listing on Alibaba & Amazon"
-    p.font.size = Pt(20)
+    p.text = "From Urdu description to a live global listing on Alibaba and Amazon"
+    p.font.size = Pt(21)
     p.font.color.rgb = C_AMBER
     p.space_after = Pt(24)
 
     p = tf1.add_paragraph()
     p.text = "Team Lead: Sufyan Arain | Shahzaib Sheikh | Sehar | Nimra | Zammad"
-    p.font.size = Pt(13)
+    p.font.size = Pt(14)
     p.font.bold = True
     p.font.color.rgb = C_WHITE
 
     p = tf1.add_paragraph()
-    p.text = "Live Working Product: http://127.0.0.1:8000 • Sialkot & Faisalabad Export Clusters"
+    p.text = "Working Product URL: http://127.0.0.1:8000 • Sialkot & Faisalabad Export Clusters"
     p.font.size = Pt(12)
     p.font.color.rgb = C_EMERALD
 
-    # -------------------------------------------------------------------------
+    # =========================================================================
     # SLIDE 2: THE PROBLEM STATEMENT
-    # -------------------------------------------------------------------------
+    # =========================================================================
     s2 = prs.slides.add_slide(blank_layout)
     add_header(s2, "Problem Statement: The Exporter Language & Know-How Barrier")
 
-    add_card(s2, Inches(0.8), Inches(1.5), Inches(3.6), Inches(5.2),
+    add_card(s2, Inches(0.8), Inches(1.4), Inches(3.6), Inches(5.4),
              "1. Language Barrier",
              [
-                 "Exporters in Sialkot (leather, surgical, sports) and Faisalabad (textiles) think, describe, and negotiate in Urdu / Roman Urdu.",
-                 "Global buyers on Alibaba & Amazon search strictly in keyword-dense commercial English.",
-                 "Translators don't know export trade jargon; listings get lost."
+                 "Pakistani manufacturers in Sialkot (leather, surgical, sports) and Faisalabad (textiles) think, sell, and negotiate in Urdu or Roman Urdu.",
+                 "Global buyers on Alibaba and Amazon search strictly in commercial, keyword-rich English.",
+                 "Traditional translators lack export trade terminology, resulting in lost ranking and buyer confusion."
              ], "CRITICAL BARRIER", C_AMBER)
 
-    add_card(s2, Inches(4.8), Inches(1.5), Inches(3.6), Inches(5.2),
-             "2. Listing Complexity",
+    add_card(s2, Inches(4.8), Inches(1.4), Inches(3.6), Inches(5.4),
+             "2. Marketplace Complexity",
              [
-                 "Alibaba & Amazon enforce rigid character limits, required bullet structures, and SEO rules.",
-                 "Exporters don't know how to write 5 buyer-focused benefit bullets or select 15 high-intent keywords.",
-                 "Manual copy-paste between external tools is slow, confusing, and error-prone."
+                 "Alibaba & Amazon enforce strict character limits, mandatory 5-bullet benefit structures, and backend SEO tags.",
+                 "Exporters struggle to format titles, attributes, and search keywords for algorithmic visibility.",
+                 "Manual copy-pasting between external tools is slow, confusing, and prone to costly compliance errors."
              ], "COMPLIANCE & SEO", C_BLUE)
 
-    add_card(s2, Inches(8.8), Inches(1.5), Inches(3.6), Inches(5.2),
-             "3. Pricing & Regulatory Blindspots",
+    add_card(s2, Inches(8.8), Inches(1.4), Inches(3.6), Inches(5.4),
+             "3. Pricing & Compliance Blindspots",
              [
-                 "Exporters rarely know US/EU market willingness-to-pay; they frequently under-price by 20-30%.",
-                 "Choosing between Payoneer & Wise by buyer country is confusing.",
-                 "FBR 0.25% export tax regime & PSEB e-PRC requirements are misunderstood."
+                 "Exporters rarely know US and EU market willingness-to-pay and consistently under-price by 20% to 30%.",
+                 "Choosing between Payoneer and Wise for international payouts is confusing.",
+                 "FBR 0.25% export tax regime and bank e-PRC requirements are hard to navigate."
              ], "REVENUE LOSS", C_EMERALD)
 
-    # -------------------------------------------------------------------------
-    # SLIDE 3: THE PROPOSED SOLUTION
-    # -------------------------------------------------------------------------
+    # =========================================================================
+    # SLIDE 3: PROPOSED SOLUTION OVERVIEW
+    # =========================================================================
     s3 = prs.slides.add_slide(blank_layout)
     add_header(s3, "Proposed Solution: End-to-End AI Export Assistant")
 
-    add_card(s3, Inches(0.8), Inches(1.5), Inches(5.6), Inches(2.5),
+    add_card(s3, Inches(0.8), Inches(1.4), Inches(5.6), Inches(2.6),
              "Urdu-First Product Capture",
              [
-                 "Speak or type in Urdu or Roman Urdu (e.g. 'Mere paas luxury quartz watches hain...')",
-                 "Speech-to-Text integration (Whisper / Web Speech API) + Unicode & verbal number normalization."
+                 "Speak or type in conversational Urdu or Roman Urdu.",
+                 "Preprocesses unicode and normalizes verbal numbers ('paanch sau' -> 500, 'challis dollar' -> $40, 'chamra' -> leather).",
+                 "Speech-to-Text integration via Web Audio / Speech API."
              ], "VOICE & TEXT", C_BLUE)
 
-    add_card(s3, Inches(6.8), Inches(1.5), Inches(5.6), Inches(2.5),
-             "Smart Urdu Slot Dialogue Loop",
+    add_card(s3, Inches(6.8), Inches(1.4), Inches(5.6), Inches(2.6),
+             "Smart Urdu Slot-Filling Dialogue",
              [
-                 "Per-category schema verification. If MOQ or material is missing, the AI asks follow-up questions in conversational Urdu.",
-                 "Customized dynamically for ANY product (Watches, Toys, Balls, Apparel, Surgical)."
+                 "Category-specific schema validation.",
+                 "If key commercial attributes (MOQ, material, dimensions) are missing, the AI prompts the exporter in natural conversational Urdu.",
+                 "Dynamically adapts to ANY product (Watches, Toys, Balls, Apparel, Surgical)."
              ], "ACTIVE DIALOGUE", C_AMBER)
 
-    add_card(s3, Inches(0.8), Inches(4.3), Inches(5.6), Inches(2.5),
+    add_card(s3, Inches(0.8), Inches(4.3), Inches(5.6), Inches(2.6),
              "RAG Generation & 0-100 Quality Scorer",
              [
-                 "Top-seller vector style retrieval crafts optimized titles, 5 benefit bullets, and 15 SEO keywords.",
-                 "Rubric-as-judge scores completeness (0-100) and automatically refines until score >= 80."
+                 "Curated top-seller style retrieval creates marketplace-ready titles, 5 benefit-driven bullets, and 15 SEO keywords.",
+                 "Official 5-dimension rubric judges completeness (0-100).",
+                 "Auto-improve feedback loop refines listing until score >= 80."
              ], "HIGH CONVERSION", C_EMERALD)
 
-    add_card(s3, Inches(6.8), Inches(4.3), Inches(5.6), Inches(2.5),
+    add_card(s3, Inches(6.8), Inches(4.3), Inches(5.6), Inches(2.6),
              "1-Click Publish & Negotiation Agent",
              [
                  "One-click publish to simulated Alibaba Trade Showcase & Amazon SP-API.",
-                 "Autonomous Buyer Communication Agent translates exporter's Urdu replies into professional B2B quotes."
+                 "Autonomous Buyer Communication Agent translates exporter's casual Urdu replies into tone-checked, professional B2B export English quotes."
              ], "HUMAN-IN-THE-LOOP", C_NAVY)
 
-    # -------------------------------------------------------------------------
-    # SLIDE 4: SYSTEM ARCHITECTURE (5 LAYERS)
-    # -------------------------------------------------------------------------
+    # =========================================================================
+    # SLIDE 4: SYSTEM ARCHITECTURE (WITH VISUAL DIAGRAM)
+    # =========================================================================
     s4 = prs.slides.add_slide(blank_layout)
-    add_header(s4, "System Architecture: 5-Layer Production Design")
+    add_header(s4, "System Architecture: 5-Layer Engineering Flow")
 
-    layers = [
-        ("1. Client Layer", ["Urdu Voice & Text Input", "Real-Time Extracted Chips", "Urdu Dialogue Follow-up Card", "Quality Score Gauge (0-100)", "Live Marketplace Viewers"]),
-        ("2. Application Layer", ["FastAPI REST Orchestrator", "Async Task Queues", "JWT & OAuth2 Mock Tokens", "Draft & Version History Management"]),
-        ("3. AI / NLP Layer", ["Preprocessor (Roman Urdu Normalizer)", "NER Attribute Extractor (Pydantic)", "Conversational Slot Manager", "RAG Vector Store & Prompt Generator", "Rubric Scorer & Auto-Improve Loop"]),
-        ("4. Integration Layer", ["Mock Alibaba Publish API", "Mock Amazon SP-API Catalog", "Buyer RFQ Webhooks", "Payoneer / Wise Fee Calculator"]),
-        ("5. Data Layer", ["SQLite Persistence DB", "Curated Top-Seller RAG Store", "Market Intelligence Snapshots", "Audit & Inquiries Log"])
-    ]
+    # Embed visual diagram
+    add_image_if_exists(s4, "diagram_architecture.png", Inches(0.8), Inches(1.4), Inches(7.4), Inches(5.4),
+                        "Figure: Five-Layer Production System Architecture (CoreTech Innovation)")
 
-    for idx, (title, items) in enumerate(layers):
-        add_card(s4, Inches(0.8 + idx * 2.4), Inches(1.5), Inches(2.2), Inches(5.3),
-                 title, items, f"LAYER {idx+1}", C_BLUE if idx % 2 == 0 else C_EMERALD)
+    add_card(s4, Inches(8.5), Inches(1.4), Inches(4.0), Inches(5.4),
+             "Architectural Highlights",
+             [
+                 "1. Client Layer: Responsive web dashboard supporting Urdu/Roman Urdu text, voice recording, live chips, and preview tabs.",
+                 "2. Application Layer: FastAPI microservice orchestrator handling async NLP execution, JWT auth, and draft persistence.",
+                 "3. AI/NLP Layer: Preprocessor, Pydantic NER extractor, slot dialogue manager, RAG vector store, and rubric judge.",
+                 "4. Integration Layer: Mock Alibaba Publish API and Amazon SP-API with realistic ASIN and listing ID allocation.",
+                 "5. Data Layer: SQLite database storing users, shops, listings, market benchmarks, and buyer inquiry logs."
+             ], "5-LAYER DESIGN", C_BLUE)
 
-    # -------------------------------------------------------------------------
-    # SLIDE 5: METHODOLOGY: THE 7-STAGE NLP PIPELINE
-    # -------------------------------------------------------------------------
+    # =========================================================================
+    # SLIDE 5: NLP METHODOLOGY (WITH VISUAL FLOWCHART)
+    # =========================================================================
     s5 = prs.slides.add_slide(blank_layout)
     add_header(s5, "Methodology: 7-Stage NLP Pipeline & Quality Feedback Loops")
 
-    stages = [
-        ("0. Capture & Normalization", "Speech/text captured; Roman Urdu mapped ('chamra'->leather, 'paanch sau'->500)."),
-        ("1. Attribute Extraction (NER)", "Pydantic validated JSON: category, product_type, material, sizes, colors, MOQ, price, lead time."),
-        ("2. Smart Slot Check", "Checks required fields. If incomplete, generates dynamic conversational Urdu prompt."),
-        ("3. RAG Listing Generator", "Few-shot top-seller retrieval generates title, 5 benefit-driven bullets, and 15 keywords."),
-        ("4. Platform Formatter", "Formats payloads adhering to Alibaba RFQ (128 char title) and Amazon SP-API limits."),
-        ("5. Quality Scorer (0-100)", "Official rubric: Completeness (30), Title (20), Bullets (20), SEO (15), Compliance (15). Auto-improves if < 80."),
-        ("6. Exporter Approval & Publish", "Human-in-the-loop: Exporter reviews Urdu summary and clicks Approve to publish live.")
-    ]
+    add_image_if_exists(s5, "diagram_methodology.png", Inches(0.8), Inches(1.4), Inches(7.4), Inches(5.4),
+                        "Figure: 7-Stage NLP Methodology Flowchart with Slot-Filling & Auto-Improve Feedback Loops")
 
-    for idx, (title, desc) in enumerate(stages):
-        top_pos = Inches(1.4 + idx * 0.78)
-        shape = s5.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), top_pos, Inches(11.7), Inches(0.68))
-        shape.fill.solid()
-        shape.fill.fore_color.rgb = C_WHITE
-        shape.line.color.rgb = C_BLUE
-        tf = shape.text_frame
-        p = tf.paragraphs[0]
-        p.text = f"{title}: "
-        p.font.bold = True
-        p.font.size = Pt(11)
-        p.font.color.rgb = C_NAVY
-        p2 = tf.paragraphs[0]
-        run = p2.add_run()
-        run.text = desc
-        run.font.bold = False
-        run.font.size = Pt(10)
-        run.font.color.rgb = C_GRAY
+    add_card(s5, Inches(8.5), Inches(1.4), Inches(4.0), Inches(5.4),
+             "Pipeline Stages & Quality Rubric",
+             [
+                 "Stage 0-1: Capture & Preprocess (Unicode normalization, verbal numbers, unit mapping).",
+                 "Stage 2: Structured NER extraction validated with Pydantic JSON schema.",
+                 "Stage 3: Slot checking against category schema; generates conversational Urdu follow-up if missing.",
+                 "Stage 4: Prompted LLM / RAG listing generator (title, 5 bullets, 15 SEO tags).",
+                 "Stage 5: Platform formatter (Alibaba 128-char limit & Amazon SP-API schema).",
+                 "Stage 6: 0-100 Rubric Scorer. If score < 80, auto-improves (up to 2 iterations).",
+                 "Stage 7: Exporter reviews Urdu summary and clicks Approve to publish live."
+             ], "7-STAGE PIPELINE", C_EMERALD)
 
-    # -------------------------------------------------------------------------
+    # =========================================================================
     # SLIDE 6: UNIVERSAL PRODUCT INTELLIGENCE
-    # -------------------------------------------------------------------------
+    # =========================================================================
     s6 = prs.slides.add_slide(blank_layout)
-    add_header(s6, "Universal Product Intelligence: Dynamic For ANY Industry")
+    add_header(s6, "Universal Product Intelligence: Dynamic for ANY Industry")
 
     prods = [
-        ("⌚ Watches & Timepieces", ["Detects Quartz, Chronograph, Smartwatches", "Follow-up: Stainless Steel 316L, Leather Strap, Water Resistance", "Generates dial logo OEM & luxury gift box bullets"]),
-        ("🧸 Toys & Kids Products", ["Detects STEM toys, plush, dolls, RC models", "Follow-up: Non-toxic ABS plastic, wood, child age group", "Generates ASTM F963 & EN71 child safety compliance bullets"]),
-        ("⚽ Sports Goods & Balls", ["Detects Footballs, Soccer, Cricket, Boxing", "Follow-up: PU leather, 32 panels, official Size 5", "Generates tournament aerodynamic flight & federation branding"]),
+        ("⌚ Watches & Timepieces", ["Detects Quartz, Chronograph, Smartwatches", "Follow-up: Stainless Steel 316L, Leather Strap, Water Resistance", "Generates dial logo OEM & luxury presentation packaging"]),
+        ("🧸 Toys & Kids Products", ["Detects STEM toys, plush, dolls, RC models", "Follow-up: Non-toxic ABS plastic, solid wood, child age group", "Generates ASTM F963 & EN71 child safety compliance bullets"]),
+        ("⚽ Sports Goods & Balls", ["Detects Match Footballs, Soccer, Cricket, Boxing", "Follow-up: PU leather, 32 panels, official Size 5", "Generates tournament aerodynamic flight & federation branding"]),
         ("🧥 Leather & Textiles", ["Detects Leather jackets, coats, hotel towels", "Follow-up: Genuine cowhide, cotton GSM, M-XXL sizing", "Generates Sialkot/Faisalabad export advantage bullets"])
     ]
 
     for idx, (title, items) in enumerate(prods):
         left_pos = Inches(0.8 + (idx % 2) * 6.0)
-        top_pos = Inches(1.5 + (idx // 2) * 2.7)
+        top_pos = Inches(1.4 + (idx // 2) * 2.7)
         add_card(s6, left_pos, top_pos, Inches(5.6), Inches(2.4),
                  title, items, "CATEGORY ADAPTIVE", C_EMERALD if idx % 2 == 1 else C_BLUE)
 
-    # -------------------------------------------------------------------------
-    # SLIDE 7: LIVE SCREENSHOT & UI SHOWCASE
-    # -------------------------------------------------------------------------
+    # =========================================================================
+    # SLIDE 7: LIVE SCREENSHOT: DASHBOARD & PRESETS
+    # =========================================================================
     s7 = prs.slides.add_slide(blank_layout)
-    add_header(s7, "Live UI Showcase: Responsive Exporter Dashboard")
+    add_header(s7, "Live UI Screenshot: Exporter Dashboard & Presets")
 
-    add_card(s7, Inches(0.8), Inches(1.5), Inches(5.6), Inches(5.2),
-             "Interactive Exporter Interface",
+    add_image_if_exists(s7, "ss_dashboard.png", Inches(0.8), Inches(1.4), Inches(7.4), Inches(5.4),
+                        "Screenshot 1: Live Web Dashboard with One-Click Exporter Presets & Urdu Input (localhost:8000)")
+
+    add_card(s7, Inches(8.5), Inches(1.4), Inches(4.0), Inches(5.4),
+             "Dashboard Features",
              [
-                 "1. Urdu Text & Voice Input Box with live microphone simulation.",
-                 "2. One-Click Exporter Presets (Watches, Toys, Footballs, Surgical, Leather, Towels).",
-                 "3. Live Extracted Attribute Chips (NER Validation).",
-                 "4. Smart Follow-Up Card in natural Urdu font (Noto Nastaliq Urdu).",
-                 "5. Generated English Listing Preview (Title, 5 Bullets, 15 Keywords).",
-                 "6. Urdu Summary Card for final human verification before publishing."
-             ], "FRONTEND DASHBOARD", C_BLUE)
+                 "1. Bilingual Header: CoreTech Innovation branding, Sialkot/Faisalabad cluster badge, and PPT Deck link.",
+                 "2. One-Click Exporter Presets: Pre-configured test benchmarks for Leather Jackets, Watches, Toys, Footballs, Surgical Scissors, and Towels.",
+                 "3. Voice / Text Input Box: Exporter enters natural Urdu or Roman Urdu with microphone capture simulation.",
+                 "4. Target Marketplace Selector: One-click selection for Alibaba (B2B), Amazon (B2C), or Both.",
+                 "5. Target Country Selector: USA, UK, Germany, UAE."
+             ], "LIVE DASHBOARD", C_BLUE)
 
-    add_card(s7, Inches(6.8), Inches(1.5), Inches(5.6), Inches(5.2),
-             "Real-Time Analytics & Scoring",
-             [
-                 "Composite Quality Scorer (0-100) with visual progress meters.",
-                 "Rubric breakdown across 5 official judging dimensions.",
-                 "Auto-Improve Feedback Loop notification (&ge;80 target).",
-                 "Market Pricing Recommendation Card ($48 suggested vs $40 base).",
-                 "Payment Gateway Optimizer (Payoneer vs Wise fee calculator).",
-                 "FBR 0.25% Export Withholding Tax & e-PRC guidance."
-             ], "LIVE METRICS & RADAR", C_EMERALD)
-
-    # -------------------------------------------------------------------------
-    # SLIDE 8: MOCK MARKETPLACE PUBLISHING (ALIBABA & AMAZON)
-    # -------------------------------------------------------------------------
+    # =========================================================================
+    # SLIDE 8: LIVE SCREENSHOT: SMART URDU FOLLOW-UP (SLOT LOOP)
+    # =========================================================================
     s8 = prs.slides.add_slide(blank_layout)
-    add_header(s8, "Live Marketplace Integration: Alibaba & Amazon SP-API")
+    add_header(s8, "Live UI Screenshot: Smart Urdu Slot-Filling Loop")
 
-    add_card(s8, Inches(0.8), Inches(1.5), Inches(5.6), Inches(5.2),
-             "Alibaba Trade Showcase Preview",
+    add_image_if_exists(s8, "ss_slot_followup.png", Inches(0.8), Inches(1.4), Inches(7.4), Inches(5.4),
+                        "Screenshot 2: AI Dialog Manager detecting missing MOQ on Surgical Scissors and prompting in Urdu")
+
+    add_card(s8, Inches(8.5), Inches(1.4), Inches(4.0), Inches(5.4),
+             "Conversational Slot Filling",
              [
-                 "Live Route: /marketplace/alibaba/{listing_id}",
-                 "Verified Gold Supplier badge (Pakistan Country Pavilion).",
-                 "Trade Assurance Protection guarantee.",
-                 "Tiered FOB Price range & Minimum Order Quantity (MOQ).",
-                 "Custom logo embossing & OEM packaging specifications.",
-                 "Interactive 'Contact Supplier' & 'Request Sample' actions."
-             ], "ALIBABA B2B EXPORT", C_AMBER)
+                 "• Missing Attribute Detection: The Pydantic schema checks if required commercial slots are present.",
+                 "• Natural Urdu Prompting: When missing MOQ, the system renders a prominent conversational alert card in Urdu font (Noto Nastaliq Urdu).",
+                 "• Zero Middleman Friction: The exporter types an answer casually (e.g. 'MOQ 500 pieces').",
+                 "• Dynamic Product-Specific Questions: For watches, it asks about case material; for toys, child safety & age group; for balls, ball size matrix."
+             ], "URDU DIALOGUE LOOP", C_AMBER)
 
-    add_card(s8, Inches(6.8), Inches(1.5), Inches(5.6), Inches(5.2),
-             "Amazon SP-API Product Detail Preview",
-             [
-                 "Live Route: /marketplace/amazon/{listing_id}",
-                 "Amazon Seller Central catalog compliance.",
-                 "Automatic ASIN allocation (e.g. B08F2A...) & SKU generation.",
-                 "Standard Buy Box with Price, Cart, and One-Click Buy.",
-                 "5 Benefit-driven bullets & Product Specifications table.",
-                 "Country of Origin: Pakistan export certification."
-             ], "AMAZON SP-API CATALOG", C_NAVY)
-
-    # -------------------------------------------------------------------------
-    # SLIDE 9: BUYER COMMUNICATION AGENT
-    # -------------------------------------------------------------------------
+    # =========================================================================
+    # SLIDE 9: LIVE SCREENSHOT: GENERATED LISTING & 0-100 SCORER
+    # =========================================================================
     s9 = prs.slides.add_slide(blank_layout)
-    add_header(s9, "Autonomous Negotiation: Buyer Communication Agent")
+    add_header(s9, "Live UI Screenshot: RAG Listing Preview & Quality Scorer")
 
-    add_card(s9, Inches(0.8), Inches(1.5), Inches(3.6), Inches(5.2),
-             "1. Buyer Inquiry Received",
+    add_image_if_exists(s9, "ss_listing_preview.png", Inches(0.8), Inches(1.4), Inches(7.4), Inches(5.4),
+                        "Screenshot 3: RAG Listing Output (Title, 5 Bullets, 15 Keywords) and 0-100 Rubric Quality Gauge")
+
+    add_card(s9, Inches(8.5), Inches(1.4), Inches(4.0), Inches(5.4),
+             "High-Converting Export Listing",
              [
-                 "International buyer sends RFQ or inquiry in English.",
-                 "Agent classifies intent: MOQ, Custom Pricing, Sample Request, Shipping.",
-                 "Catalog queries auto-answered in fluent business English."
-             ], "INTENT CLASSIFIER", C_BLUE)
+                 "• Title Optimization: Character-length compliant title with primary commercial keywords.",
+                 "• 5 Buyer-Focused Bullets: Structured around durability, OEM customization, factory direct pricing, and transit timelines.",
+                 "• 15 Backend SEO Keywords: High-intent B2B search terms for North America and European buyers.",
+                 "• Quality Rubric Score: Evaluated across 5 dimensions with a 94/100 composite score.",
+                 "• Urdu Approval Summary: Exporter reviews an Urdu summary before approving for publish."
+             ], "EXPORT-READY OUTPUT", C_EMERALD)
 
-    add_card(s9, Inches(4.8), Inches(1.5), Inches(3.6), Inches(5.2),
-             "2. Urdu Escalation Alert",
-             [
-                 "For custom quotes or custom branding, the agent alerts the exporter in Urdu:",
-                 "'USA ke buyer Marcus Vance ne custom quote maanga hai. Aap ka kya rate hai?'",
-                 "Exporter replies casually in Urdu: 'iska rate 26 dollar hai aur 12 din lagain gay'."
-             ], "BILINGUAL ESCALATION", C_AMBER)
-
-    add_card(s9, Inches(8.8), Inches(1.5), Inches(3.6), Inches(5.2),
-             "3. Tone & Policy Checked Quote",
-             [
-                 "Agent converts exporter's Urdu note into professional B2B export English.",
-                 "Includes polite greeting, quoted price, lead time, ISO compliance statement.",
-                 "Automated policy filter strips sensitive contact leaks (WhatsApp/phone)."
-             ], "ENGLISH B2B SYNTHESIS", C_EMERALD)
-
-    # -------------------------------------------------------------------------
-    # SLIDE 10: 3-MINUTE DEMO VIDEO & PITCH SCRIPT
-    # -------------------------------------------------------------------------
+    # =========================================================================
+    # SLIDE 10: LIVE SCREENSHOTS: ALIBABA & AMAZON PUBLISHING
+    # =========================================================================
     s10 = prs.slides.add_slide(blank_layout)
-    add_header(s10, "Hackathon Demo Pitch Video Script (Exact 3-Minute Timing)")
+    add_header(s10, "Live Marketplace Previews: Alibaba Trade & Amazon SP-API")
+
+    add_image_if_exists(s10, "ss_alibaba.png", Inches(0.8), Inches(1.4), Inches(5.7), Inches(5.4),
+                        "Screenshot 4: Verified Alibaba Gold Supplier Showcase (/marketplace/alibaba/sample)")
+
+    add_image_if_exists(s10, "ss_amazon.png", Inches(6.8), Inches(1.4), Inches(5.7), Inches(5.4),
+                        "Screenshot 5: Amazon Seller Central Buy Box & SP-API Catalog (/marketplace/amazon/sample)")
+
+    # =========================================================================
+    # SLIDE 11: LIVE SCREENSHOT: BUYER COMMUNICATION AGENT
+    # =========================================================================
+    s11 = prs.slides.add_slide(blank_layout)
+    add_header(s11, "Live UI Screenshot: Buyer Communication Agent Simulator")
+
+    add_image_if_exists(s11, "ss_buyer_agent.png", Inches(0.8), Inches(1.4), Inches(7.4), Inches(5.4),
+                        "Screenshot 6: Buyer RFQ received -> Urdu escalation alert -> Synthesized B2B English reply")
+
+    add_card(s11, Inches(8.5), Inches(1.4), Inches(4.0), Inches(5.4),
+             "Autonomous Negotiation Loop",
+             [
+                 "1. Incoming Buyer Message: Commercial buyer in Chicago inquires: 'Can you do 200 watches with custom logo on the dial? What is your FOB price?'.",
+                 "2. AI Agent Urdu Alert: Agent translates inquiry intent and alerts the exporter in Urdu: 'USA ke buyer ne custom quote maanga hai. Aap ka kya rate hai?'.",
+                 "3. Exporter Casual Urdu Reply: Exporter responds casually: 'iska rate 26 dollar hai aur 12 din lagain gay'.",
+                 "4. Synthesized English Quote: Agent crafts a courteous, tone-checked B2B quotation confirming $26.00 FOB price and 12-day turnaround."
+             ], "NEGOTIATION AGENT", C_NAVY)
+
+    # =========================================================================
+    # SLIDE 12: FINANCIAL & REGULATORY COMPLIANCE
+    # =========================================================================
+    s12 = prs.slides.add_slide(blank_layout)
+    add_header(s12, "Financial & Compliance: Payment Optimizer & FBR 0.25% Tax")
+
+    add_card(s12, Inches(0.8), Inches(1.4), Inches(5.6), Inches(5.4),
+             "Payment Gateway Optimizer",
+             [
+                 "• Payoneer vs Wise Fee Comparison: Evaluates transaction fees and foreign exchange margins based on buyer country.",
+                 "• USA & North America Orders: Recommends Payoneer for direct integration with Amazon payouts and Alibaba Trade Assurance disbursements.",
+                 "• UK & European Orders: Recommends Wise Business for direct SEPA / IBAN bank transfers with lower conversion spreads.",
+                 "• Transparent Fee Breakdown: Displays estimated gateway fees and net exporter payout in USD & PKR."
+             ], "GATEWAY OPTIMIZER", C_BLUE)
+
+    add_card(s12, Inches(6.8), Inches(1.4), Inches(5.6), Inches(5.4),
+             "FBR 0.25% Export Tax Regime",
+             [
+                 "• Concessionary Export Slab: Guides manufacturers to qualify for the 0.25% Final Tax Regime under PSEB & Export Incentive policies (saving 0.75% vs standard 1% withholding).",
+                 "• Electronic Proceeds Realization Certificate (e-PRC): Emphasizes obtaining digital e-PRC certificates from commercial Pakistani banks upon remittance arrival.",
+                 "• Exporter Guidance in Urdu: Delivers clear, non-technical tax advice so factory owners stay fully compliant without hiring expensive consultants."
+             ], "FBR TAX COMPLIANCE", C_EMERALD)
+
+    # =========================================================================
+    # SLIDE 13: 3-MINUTE DEMO VIDEO PITCH SCRIPT
+    # =========================================================================
+    s13 = prs.slides.add_slide(blank_layout)
+    add_header(s13, "Hackathon Demo Pitch Video Script (Exact 3-Minute Timing)")
 
     cues = [
         ("0:00 - 0:30", "The Hook & Problem", "Show a real Urdu description from a Sialkot exporter. Ask: 'How does an Urdu speaker reach buyers in the USA without getting ripped off?'"),
@@ -374,8 +396,8 @@ def create_deck():
     ]
 
     for idx, (time_slot, title, script) in enumerate(cues):
-        top_pos = Inches(1.4 + idx * 0.78)
-        shape = s10.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), top_pos, Inches(11.7), Inches(0.68))
+        top_pos = Inches(1.35 + idx * 0.78)
+        shape = s13.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), top_pos, Inches(11.7), Inches(0.68))
         shape.fill.solid()
         shape.fill.fore_color.rgb = C_WHITE
         shape.line.color.rgb = C_AMBER if idx in [1, 2, 5] else C_BLUE
@@ -391,13 +413,13 @@ def create_deck():
         run.font.size = Pt(10)
         run.font.color.rgb = C_GRAY
 
-    # -------------------------------------------------------------------------
-    # SLIDE 11: BUSINESS MODEL & 12-MONTH ROADMAP
-    # -------------------------------------------------------------------------
-    s11 = prs.slides.add_slide(blank_layout)
-    add_header(s11, "Business Model & 12-Month Execution Roadmap")
+    # =========================================================================
+    # SLIDE 14: BUSINESS MODEL & 12-MONTH ROADMAP
+    # =========================================================================
+    s14 = prs.slides.add_slide(blank_layout)
+    add_header(s14, "Business Model & 12-Month Execution Roadmap")
 
-    add_card(s11, Inches(0.8), Inches(1.5), Inches(3.6), Inches(5.2),
+    add_card(s14, Inches(0.8), Inches(1.4), Inches(3.6), Inches(5.4),
              "SaaS Pricing Tiers",
              [
                  "Starter ($29/mo): Urdu-to-English listings, Alibaba & Amazon formatting, quality scoring.",
@@ -406,7 +428,7 @@ def create_deck():
                  "Path to $1M ARR: 100 paid users by Month 6 ($5k/mo); 1,000+ paid users by Month 12 ($50k+/mo)."
              ], "SUBSCRIPTION TIERS", C_BLUE)
 
-    add_card(s11, Inches(4.8), Inches(1.5), Inches(7.6), Inches(5.2),
+    add_card(s14, Inches(4.8), Inches(1.4), Inches(7.6), Inches(5.4),
              "12-Month Execution Roadmap",
              [
                  "Phase 1 (Day 1 - Month 1) [Hackathon MVP]: Working demo, 10 exporter interviews in Sialkot, apply for Alibaba & Amazon developer accounts.",
@@ -416,38 +438,11 @@ def create_deck():
                  "Phase 5 (Months 10 - 12) [Market Leader]: 100-SKU bulk catalog importer, automated competitor price tracking alerts, factory direct sales team."
              ], "5-PHASE STAGED EXECUTION", C_EMERALD)
 
-    # -------------------------------------------------------------------------
-    # SLIDE 12: EVALUATION METRICS & ETHICAL COMPLIANCE
-    # -------------------------------------------------------------------------
-    s12 = prs.slides.add_slide(blank_layout)
-    add_header(s12, "Evaluation Metrics & Ethical Compliance")
-
-    add_card(s12, Inches(0.8), Inches(1.5), Inches(5.6), Inches(5.2),
-             "Measured Success Metrics",
-             [
-                 "Extraction Accuracy: Field-level F1 score >= 0.85 across test set.",
-                 "Listing Completeness: 100% of required platform attributes populated.",
-                 "Quality Rubric Score: Average score >= 80/100 verified by auto-improve loop.",
-                 "Translation Fidelity: Average >= 4.0 / 5.0 across bilingual reviewers.",
-                 "Pipeline Latency: End-to-end processing under 1.5 seconds locally.",
-                 "Test Suite Coverage: 16 automated Pytest unit and integration tests passing."
-             ], "BENCHMARK TARGETS", C_EMERALD)
-
-    add_card(s12, Inches(6.8), Inches(1.5), Inches(5.6), Inches(5.2),
-             "Ethical AI & Compliance Guarantees",
-             [
-                 "Originality: 100% original implementation written from scratch during building days.",
-                 "Zero Shop Password Leaks: OAuth2 tokens only; zero stored passwords.",
-                 "No Hallucinated Claims: Generation constrained to extracted JSON attributes.",
-                 "Human-in-the-Loop: No listing or quotation is published without explicit exporter approval.",
-                 "FBR Tax Compliance: Strict guidance on 0.25% regime & bank e-PRC documentation."
-             ], "ETHICS & POLICY", C_NAVY)
-
-    # -------------------------------------------------------------------------
-    # SLIDE 13: TEAM CORETECH INNOVATION
-    # -------------------------------------------------------------------------
-    s13 = prs.slides.add_slide(blank_layout)
-    add_header(s13, "Team CoreTech Innovation & Shared Responsibilities")
+    # =========================================================================
+    # SLIDE 15: TEAM CORETECH INNOVATION & DELIVERABLES
+    # =========================================================================
+    s15 = prs.slides.add_slide(blank_layout)
+    add_header(s15, "Team CoreTech Innovation & Shared Responsibilities")
 
     members = [
         ("Sufyan Arain", "Team Lead", "Project architecture, integration, demo pitch, final submission delivery"),
@@ -459,7 +454,7 @@ def create_deck():
 
     for idx, (name, role, resp) in enumerate(members):
         top_pos = Inches(1.4 + idx * 1.05)
-        shape = s13.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), top_pos, Inches(11.7), Inches(0.92))
+        shape = s15.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(0.8), top_pos, Inches(11.7), Inches(0.92))
         shape.fill.solid()
         shape.fill.fore_color.rgb = C_WHITE
         shape.line.color.rgb = C_BLUE
@@ -480,76 +475,10 @@ def create_deck():
         p2.font.size = Pt(10)
         p2.font.color.rgb = C_GRAY
 
-    # -------------------------------------------------------------------------
-    # SLIDE 14: SUBMISSION DELIVERABLES & CHECKLIST
-    # -------------------------------------------------------------------------
-    s14 = prs.slides.add_slide(blank_layout)
-    add_header(s14, "Official Submission Deliverables Checklist")
-
-    add_card(s14, Inches(0.8), Inches(1.5), Inches(5.6), Inches(5.2),
-             "Official Submission Requirements",
-             [
-                 "[DONE] Working Product Link: Live FastAPI server on localhost:8000.",
-                 "[DONE] Recorded Demo Video: Scripted for 3-minute pitch (cues provided).",
-                 "[DONE] Written Description: Executive summary, problem, solution, architecture.",
-                 "[DONE] GitHub Repository: Clean Git commit history, clear license.",
-                 "[DONE] Professional README: Tech stack, setup steps, methodology, team roles.",
-                 "[DONE] Live Mock Marketplaces: Authentic Alibaba & Amazon pages."
-             ], "100% READY FOR JUDGING", C_EMERALD)
-
-    add_card(s14, Inches(6.8), Inches(1.5), Inches(5.6), Inches(5.2),
-             "Judging Criteria Alignment (100%)",
-             [
-                 "Innovation (25%): Urdu-first voice/text NLP, slot filling, RAG generation, quality scoring loop.",
-                 "Impact (25%): Directly addresses Pakistan's $30B+ export cluster language barrier.",
-                 "Feasibility (25%): Working MVP with zero paid API blockers; honest limitations and 12-month plan.",
-                 "Presentation (25%): Structured 3-min pitch, complete deck, diagrams, and live demo."
-             ], "MAXIMUM SCORING STRATEGY", C_AMBER)
-
-    # -------------------------------------------------------------------------
-    # SLIDE 15: CONCLUSION & Q&A
-    # -------------------------------------------------------------------------
-    s15 = prs.slides.add_slide(blank_layout)
-    bg15 = s15.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(0), Inches(0), Inches(13.333), Inches(7.5))
-    bg15.fill.solid()
-    bg15.fill.fore_color.rgb = C_NAVY
-    bg15.line.color.rgb = C_NAVY
-
-    tb15 = s15.shapes.add_textbox(Inches(1.2), Inches(1.8), Inches(11), Inches(4.5))
-    tf15 = tb15.text_frame
-    tf15.word_wrap = True
-
-    p = tf15.paragraphs[0]
-    p.text = "AI Export Manager"
-    p.font.size = Pt(40)
-    p.font.bold = True
-    p.font.color.rgb = C_WHITE
-
-    p = tf15.add_paragraph()
-    p.text = "Thank You Judges & Mentors — Ready for Live Demonstration & Q&A"
-    p.font.size = Pt(18)
-    p.font.color.rgb = C_AMBER
-    p.space_after = Pt(20)
-
-    p = tf15.add_paragraph()
-    p.text = "• Live Dashboard URL: http://127.0.0.1:8000"
-    p.font.size = Pt(14)
-    p.font.color.rgb = C_EMERALD
-
-    p = tf15.add_paragraph()
-    p.text = "• CoreTech Innovation Team: Sufyan Arain, Shahzaib Sheikh, Sehar, Nimra, Zammad"
-    p.font.size = Pt(13)
-    p.font.color.rgb = C_WHITE
-
-    p = tf15.add_paragraph()
-    p.text = "• Project Location: C:\\Users\\n tech\\.gemini\\antigravity\\scratch\\ai-export-manager"
-    p.font.size = Pt(11)
-    p.font.color.rgb = C_GRAY
-
     # Save presentation
-    output_path = os.path.join(os.path.dirname(__file__), "AI_Export_Manager_Hackathon_Presentation.pptx")
+    output_path = os.path.join(BASE_DIR, "AI_Export_Manager_Hackathon_Presentation.pptx")
     prs.save(output_path)
-    print(f"Presentation successfully created: {output_path}")
+    print(f"Presentation successfully generated with embedded diagrams and screenshots: {output_path}")
 
 if __name__ == "__main__":
     create_deck()
