@@ -69,22 +69,37 @@
       </div>
 
       <!-- Quick Benchmark Presets -->
-      <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs space-y-2 min-w-[280px]">
-        <div class="font-bold text-slate-700 flex items-center">
-          <i class="fa-solid fa-wand-magic-sparkles text-amber-500 mr-1.5"></i> One-Click Exporter Presets:
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs space-y-1.5 min-w-[320px]">
+        <div class="font-bold text-slate-700 flex items-center justify-between pb-1 border-b border-slate-200">
+          <span class="flex items-center"><i class="fa-solid fa-wand-magic-sparkles text-amber-500 mr-1.5"></i> One-Click Presets:</span>
+          <span class="text-[10px] text-slate-400">Click to test NLP</span>
         </div>
-        <button onclick="loadPreset(1)" class="w-full text-left bg-white hover:bg-sky-50 hover:border-sky-300 border border-slate-200 p-2 rounded transition flex items-center justify-between">
-          <span>🧥 Sialkot Leather Jacket (Full)</span>
-          <i class="fa-solid fa-arrow-right text-slate-400 text-[10px]"></i>
-        </button>
-        <button onclick="loadPreset(2)" class="w-full text-left bg-white hover:bg-amber-50 hover:border-amber-300 border border-slate-200 p-2 rounded transition flex items-center justify-between">
-          <span>✂️ Surgical Scissors (Missing MOQ)</span>
-          <span class="bg-amber-100 text-amber-800 text-[9px] px-1.5 py-0.5 rounded font-bold">Slot Loop</span>
-        </button>
-        <button onclick="loadPreset(3)" class="w-full text-left bg-white hover:bg-emerald-50 hover:border-emerald-300 border border-slate-200 p-2 rounded transition flex items-center justify-between">
-          <span>🏨 Faisalabad Hotel Towels (Full)</span>
-          <i class="fa-solid fa-arrow-right text-slate-400 text-[10px]"></i>
-        </button>
+        <div class="grid grid-cols-2 gap-1.5">
+          <button onclick="loadPreset(1)" class="text-left bg-white hover:bg-sky-50 hover:border-sky-300 border border-slate-200 p-1.5 rounded transition flex items-center justify-between">
+            <span class="truncate">🧥 Leather Jacket</span>
+            <i class="fa-solid fa-arrow-right text-slate-400 text-[9px] shrink-0"></i>
+          </button>
+          <button onclick="loadPreset(2)" class="text-left bg-white hover:bg-sky-50 hover:border-sky-300 border border-slate-200 p-1.5 rounded transition flex items-center justify-between">
+            <span class="truncate font-semibold text-sky-800">⌚ Quartz Watches</span>
+            <i class="fa-solid fa-arrow-right text-slate-400 text-[9px] shrink-0"></i>
+          </button>
+          <button onclick="loadPreset(3)" class="text-left bg-white hover:bg-sky-50 hover:border-sky-300 border border-slate-200 p-1.5 rounded transition flex items-center justify-between">
+            <span class="truncate font-semibold text-indigo-800">🧸 STEM Toys</span>
+            <i class="fa-solid fa-arrow-right text-slate-400 text-[9px] shrink-0"></i>
+          </button>
+          <button onclick="loadPreset(4)" class="text-left bg-white hover:bg-sky-50 hover:border-sky-300 border border-slate-200 p-1.5 rounded transition flex items-center justify-between">
+            <span class="truncate font-semibold text-emerald-800">⚽ Match Footballs</span>
+            <i class="fa-solid fa-arrow-right text-slate-400 text-[9px] shrink-0"></i>
+          </button>
+          <button onclick="loadPreset(5)" class="text-left bg-white hover:bg-amber-50 hover:border-amber-300 border border-slate-200 p-1.5 rounded transition flex items-center justify-between col-span-2">
+            <span>✂️ Surgical Scissors (Missing MOQ)</span>
+            <span class="bg-amber-100 text-amber-800 text-[9px] px-1.5 py-0.5 rounded font-bold">Slot Loop</span>
+          </button>
+          <button onclick="loadPreset(6)" class="text-left bg-white hover:bg-sky-50 hover:border-sky-300 border border-slate-200 p-1.5 rounded transition flex items-center justify-between col-span-2">
+            <span>🏨 Faisalabad Hotel Bath Towels (Full)</span>
+            <i class="fa-solid fa-arrow-right text-slate-400 text-[9px] shrink-0"></i>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -465,18 +480,21 @@
   <!-- Frontend Logic -->
   <script>
     let currentListingId = null;
+    let currentListingData = null;
     let isRecording = false;
 
-    // Presets from proposal
+    // Presets from proposal & expanded categories
     const PRESETS = {
       1: "Mere paas asli chamray ki mardana jacket hai, size M se XXL, kaala aur brown rang, kam az kam 500 pieces, rate 40 dollar per piece, 15 din mein delivery.",
-      2: "Sialkot medical surgical mayo scissors stainless steel CE mark rate 4 dollar delivery 10 din",
-      3: "Faisalabad 100% combed cotton bath towels 70x140 cm white and grey MOQ 1000 pieces rate 5 dollar 20 days delivery"
+      2: "Mere paas luxury quartz watches hain stainless steel case aur leather strap ke sath, black dial, rate 25 dollar, kam az kam 100 pieces, 12 din delivery.",
+      3: "Ham bachon ke educational STEM learning toys banatay hain non-toxic ABS plastic ke, multi-color, rate 6 dollar per unit, MOQ 500 toys, 15 din mein delivery.",
+      4: "Sialkot FIFA quality pro match football hand stitched PU leather size 5 MOQ 200 balls rate 12 dollar 20 days delivery.",
+      5: "Sialkot medical surgical mayo scissors stainless steel CE mark rate 4 dollar delivery 10 din",
+      6: "Faisalabad 100% combed cotton bath towels 70x140 cm white and grey MOQ 1000 pieces rate 5 dollar 20 days delivery."
     };
 
     function loadPreset(num) {
       document.getElementById('urduInput').value = PRESETS[num];
-      // highlight button
       submitDraft();
     }
 
@@ -586,6 +604,7 @@
 
     // Process API response
     function handleListingResponse(data) {
+      currentListingData = data;
       if (data.status === 'needs_info') {
         // Show follow-up card
         const fu = data.slots_status;
@@ -773,6 +792,33 @@
       const stream = document.getElementById('inquiryStream');
       stream.innerHTML = `<div class="p-4 text-center text-xs text-purple-700 bg-purple-50 rounded-xl"><i class="fa-solid fa-spinner fa-spin mr-2"></i> Connecting to Alibaba Buyer RFQ Stream...</div>`;
 
+      // Build dynamic product-tailored inquiry message
+      let prodType = "export product";
+      let unitPrice = 40.0;
+      let moq = 500;
+      if (currentListingData && currentListingData.attributes) {
+        prodType = (currentListingData.attributes.product_type || "export product").replace(/_/g, ' ');
+        unitPrice = currentListingData.attributes.unit_price_usd || 40.0;
+        moq = currentListingData.attributes.moq || 500;
+      }
+
+      let buyerMessage = `Hello, we are an established commercial importer in Chicago, USA. We want to place an immediate trial order for 300 units of your ${prodType} with custom private brand packaging. Can you quote your best FOB price and turnaround time?`;
+      let defaultReply = `iska rate ${(unitPrice * 1.05).toFixed(0)} dollar hai aur 15 din lagain gay`;
+
+      if (prodType.includes("watch")) {
+        buyerMessage = "Hello, we are a jewelry & watch boutique chain in Chicago, USA. We want to order 200 units of your quartz watches with our private label logo engraved on the dial and case-back. What is your best FOB price and lead time?";
+        defaultReply = "iska rate 26 dollar hai aur 12 din lagain gay";
+      } else if (prodType.includes("toy")) {
+        buyerMessage = "Hello, we are a major educational toy distributor in Chicago, USA. We want to place an order for 500 units of your educational toys with custom English retail gift boxes. Can you confirm EN71 certification, FOB price, and delivery time?";
+        defaultReply = "iska rate 6 dollar hai aur 15 din lagain gay ASTM safe";
+      } else if (prodType.includes("football") || prodType.includes("ball")) {
+        buyerMessage = "Hello, we represent a youth soccer academy in Chicago, USA. Can you manufacture 300 tournament match balls with our official club crest printed? What is your best wholesale FOB price and dispatch time?";
+        defaultReply = "iska rate 12 dollar hai aur 18 din lagain gay";
+      } else if (prodType.includes("scissor") || prodType.includes("surgical")) {
+        buyerMessage = "Hello, we are a surgical equipment supplier in Chicago, USA. We want 500 units of operating mayo scissors with CE marking and sterile packaging. What is your FOB price?";
+        defaultReply = "iska rate 4 dollar hai aur 10 din lagain gay CE certified";
+      }
+
       try {
         const res = await fetch('/api/v1/buyer/inquiries', {
           method: 'POST',
@@ -781,7 +827,7 @@
             listing_id: currentListingId,
             buyer_name: "Marcus Vance (Global Sourcing Director)",
             buyer_country: "United States",
-            inquiry_message: "Hello, we are interested in placing an immediate trial order for 300 pieces with our custom brand logo embossed on the chest. Can you offer a discounted FOB price and confirm your turnaround time to Chicago?"
+            inquiry_message: buyerMessage
           })
         });
 
@@ -806,7 +852,7 @@
             </div>
             <p class="text-sm text-amber-950 urdu-font">${data.exporter_question_urdu}</p>
             <div class="flex items-center space-x-2 pt-2">
-              <input id="exporterUrduReply" type="text" value="iska rate 45 dollar hai aur 20 din lagain gay" class="flex-1 bg-white border border-amber-300 rounded-lg px-3 py-2 text-xs outline-none focus:ring-1 focus:ring-amber-500">
+              <input id="exporterUrduReply" type="text" value="${defaultReply}" class="flex-1 bg-white border border-amber-300 rounded-lg px-3 py-2 text-xs outline-none focus:ring-1 focus:ring-amber-500">
               <button onclick="sendExporterReply()" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-4 py-2 rounded-lg text-xs shadow transition">
                 Jawab Bhejein
               </button>

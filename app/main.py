@@ -35,6 +35,27 @@ static_dir = os.path.join(os.path.dirname(__file__), "static")
 os.makedirs(static_dir, exist_ok=True)
 app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
+def get_product_icon(product_type: str, category: str) -> str:
+    p = (product_type or "").lower()
+    c = (category or "").lower()
+    if "watch" in p or "timepiece" in c:
+        return "fa-solid fa-clock"
+    elif "toy" in p or "kids" in c:
+        return "fa-solid fa-shapes"
+    elif "football" in p or "soccer" in p or "ball" in p:
+        return "fa-solid fa-futbol"
+    elif "scissor" in p or "surgical" in c:
+        return "fa-solid fa-scissors"
+    elif "towel" in p or "textile" in c:
+        return "fa-solid fa-scroll"
+    elif "earbud" in p or "electronic" in c:
+        return "fa-solid fa-headphones"
+    elif "shoe" in p or "footwear" in c:
+        return "fa-solid fa-shoe-prints"
+    elif "jacket" in p or "leather" in c:
+        return "fa-solid fa-vest"
+    return "fa-solid fa-boxes-packing"
+
 @app.get("/", response_class=HTMLResponse)
 async def serve_dashboard():
     index_path = os.path.join(static_dir, "index.html")
@@ -46,7 +67,6 @@ async def serve_dashboard():
 @app.get("/marketplace/alibaba/{listing_id}", response_class=HTMLResponse)
 async def serve_alibaba_mock(listing_id: str):
     record = db.get_listing(listing_id)
-    # Check if id matched directly or in published_platforms
     if not record:
         for r in db.list_all_listings():
             if r.get("published_platforms", {}).get("alibaba", {}).get("listing_id") == listing_id:
@@ -60,16 +80,21 @@ async def serve_alibaba_mock(listing_id: str):
     if os.path.exists(ali_template):
         with open(ali_template, "r", encoding="utf-8") as f:
             content = f.read()
-            # Dynamic replacements
             listing = record.get("listing", {})
             attrs = record.get("attributes", {})
+            prod_type = attrs.get("product_type", "export_product")
+            category = attrs.get("category", "General Export")
+            mat = (attrs.get("material") or "High-Grade Export Material").title()
+            icon_cls = get_product_icon(prod_type, category)
+
             content = content.replace("{{TITLE}}", listing.get("title", "Export Product"))
             content = content.replace("{{PRICE}}", f"${attrs.get('unit_price_usd', 40.0):.2f}")
-            content = content.replace("{{MOQ}}", f"{attrs.get('moq', 500)} Pieces")
+            content = content.replace("{{MOQ}}", f"{attrs.get('moq', 500)} Units")
             content = content.replace("{{LEAD_TIME}}", f"{attrs.get('lead_time_days', 15)} Days")
-            content = content.replace("{{MATERIAL}}", attrs.get("material", "Genuine Leather").title())
-            content = content.replace("{{CATEGORY}}", attrs.get("category", "Leather Apparel"))
+            content = content.replace("{{MATERIAL}}", mat)
+            content = content.replace("{{CATEGORY}}", category)
             content = content.replace("{{LISTING_ID}}", listing_id)
+            content = content.replace("{{ICON_CLASS}}", icon_cls)
             bullets_html = "".join([f"<li>{b}</li>" for b in listing.get("bullets", [])])
             content = content.replace("{{BULLETS_HTML}}", bullets_html)
             return content
@@ -93,10 +118,16 @@ async def serve_amazon_mock(listing_id: str):
             content = f.read()
             listing = record.get("listing", {})
             attrs = record.get("attributes", {})
+            prod_type = attrs.get("product_type", "export_product")
+            category = attrs.get("category", "General Export")
+            mat = (attrs.get("material") or "High-Grade Export Material").title()
+            icon_cls = get_product_icon(prod_type, category)
+
             content = content.replace("{{TITLE}}", listing.get("title", "Export Product"))
             content = content.replace("{{PRICE}}", f"${attrs.get('unit_price_usd', 40.0):.2f}")
-            content = content.replace("{{MATERIAL}}", attrs.get("material", "Genuine Leather").title())
+            content = content.replace("{{MATERIAL}}", mat)
             content = content.replace("{{LISTING_ID}}", listing_id)
+            content = content.replace("{{ICON_CLASS}}", icon_cls)
             bullets_html = "".join([f"<li>{b}</li>" for b in listing.get("bullets", [])])
             content = content.replace("{{BULLETS_HTML}}", bullets_html)
             return content
